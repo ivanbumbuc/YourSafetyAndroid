@@ -10,8 +10,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:outlineAmbientShadowColor="#8F5050"
+        android:outlineSpotShadowColor="#352626"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="102dp">
+        tools:layout_editor_absoluteY="31dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -19,33 +21,58 @@
             android:orientation="vertical">
 
 
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
+            <ImageView
+                android:id="@+id/imageViewSafetyTimerButton"
+                android:layout_width="372dp"
+                android:layout_height="175dp"
+                android:layout_marginTop="32dp"
+                android:outlineAmbientShadowColor="#735656"
+                android:outlineSpotShadowColor="#613B3B"
+                android:src="@drawable/timebackground"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="548dp"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button9" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="191dp"
+                android:layout_height="122dp"
+                android:src="@drawable/timersafety"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintHorizontal_bias="0.693"
+                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton" />
 
-            <Button
-                android:id="@+id/button11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="172dp"
-                android:text="Button"
-                app:layout_constraintTop_toBottomOf="@+id/button10"
-                tools:layout_editor_absoluteX="170dp" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="61dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="16dp"
+                android:text="Safety Timer"
+                android:textColor="#040404"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintHorizontal_bias="0.258"
+                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="110dp"
+                android:layout_height="63dp"
+                android:text="Timer for safety, it is set and if it is not stopped at the end of it, emergency messages are sent."
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
