@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         Information.sharedPreferences = getSharedPreferences(Information.yourSafetyLogin, Context.MODE_PRIVATE);
         login = findViewById(R.id.buttonLoginMain);
-
         createAccount = findViewById(R.id.buttoncreateAccounMain);
         login.setOnClickListener(r -> {
             Intent sessionIntent = new Intent(this, LoginActivity.class);

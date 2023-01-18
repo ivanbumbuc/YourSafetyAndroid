@@ -1,20 +1,15 @@
 package com.example.yoursafetyandroid.menu;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.example.yoursafetyandroid.location.TimeLocation;
 
-import com.example.yoursafetyandroid.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LocationFragment extends Fragment {
 
 
@@ -22,6 +17,10 @@ public class LocationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if( ActivityCompat.checkSelfPermission(MenuActivity.context, Manifest.permission.ACCESS_BACKGROUND_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+            TimeLocation time = new TimeLocation(MenuActivity.context);
+            time.cancelTime();
+            time.setTime();
+        }
         }
     }
