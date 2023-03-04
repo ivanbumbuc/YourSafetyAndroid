@@ -65,7 +65,7 @@
         android:layout_width="222dp"
         android:layout_height="54dp"
         android:backgroundTint="#FAFAFA"
-        android:text="Log in"
+        android:text="Sign up"
         android:textColor="@color/black"
         android:textColorHighlight="#2E7D32"
         app:cornerRadius="15dp"
@@ -85,4 +85,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

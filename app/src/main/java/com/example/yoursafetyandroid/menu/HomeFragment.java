@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.yoursafetyandroid.R;
-import com.example.yoursafetyandroid.login.LoginActivity;
 import com.example.yoursafetyandroid.safetyTimer.SafetyTimerActivity;
 
 

@@ -2,4 +2,5 @@
     <string name="app_name">YourSafetyAndroid</string>
     <string name="map_key" translatable="false">AIzaSyDgome0A-bg1gPp-WQeZOjwE0AuKCqazqo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiaXZhbmJ1bWJ1YyIsImEiOiJjbGM1YnpwMWMwYXhyM3ByeG9tbHo5bTJyIn0.lPqP7l2vFYq0eC3d4Kx5Xg</string>
 </resources>

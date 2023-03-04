@@ -22,7 +22,7 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth; //pentru conectare in cont
-  //  private ProgressDialog progres;  //pentru progresul la conectare
+    private ProgressDialog progres;  //pentru progresul la conectare
 
     private  EditText email;
     private  EditText password;
@@ -41,17 +41,16 @@ public class LoginActivity extends AppCompatActivity {
         ImageView backBtn = findViewById(R.id.buttonBackLogin);
         Button loginBtn = findViewById(R.id.buttonConnectLogin);
 
-     //   progres = new ProgressDialog(this);
+        progres = new ProgressDialog(this);
         auth= FirebaseAuth.getInstance();
         email = findViewById(R.id.inputEmailLogin);
         password = findViewById(R.id.inputPasswordLogin);
         loginBtn.setOnClickListener(v -> {
-            // loginBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.button_press_animation));
             if (email.getText().toString().length() > 0 && password.getText().toString().length() > 0) {
-           //     progres.setMessage("Please wait while we set up");
-            //    progres.setTitle("Login");
-             //   progres.setCanceledOnTouchOutside(false);
-               // progres.show();
+                progres.setMessage("Please wait while we set up");
+                progres.setTitle("Login");
+                progres.setCanceledOnTouchOutside(false);
+                progres.show();
                 auth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         SharedPreferences.Editor editor = Information.sharedPreferences.edit();
@@ -59,11 +58,11 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(Information.passwordPreference, password.getText().toString());
                         editor.putString(Information.userUIDPreference, Objects.requireNonNull(auth.getCurrentUser()).getUid());
                         editor.apply();
-                     //   progres.dismiss();
+                        progres.dismiss();
                         logat();
                         Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                     } else {
-                      //  progres.dismiss();
+                        progres.dismiss();
                         Toast.makeText(LoginActivity.this, "Login failed, email or password incorrect!", Toast.LENGTH_SHORT).show();
                     }
                 });

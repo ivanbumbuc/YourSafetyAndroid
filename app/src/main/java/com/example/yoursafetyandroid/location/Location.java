@@ -50,13 +50,6 @@ public class Location {
                         //s.add(addresses.get(0).getCountryName()+"");//tara
                         //s.add(addresses.get(0).getLocality()+""); //localitatea
                         // s.add(addresses.get(0).getAddressLine(0)+""); //adresa totala
-//                        FirebaseAuth auth=FirebaseAuth.getInstance();
-//                        FirebaseUser user=auth.getCurrentUser();
-//                        FirebaseFirestore db=FirebaseFirestore.getInstance();// initializam instanta la baza de date
-//                        if(user!=null) {
-//                            addBaseLocation(user,db,addresses);
-//                        }
-//                        else
                             Toast.makeText(MenuActivity.context, addresses.get(0).getLatitude()+", "+addresses.get(0).getLongitude()+", "+addresses.get(0).getCountryName()+", "+addresses.get(0).getLocality()+", "+addresses.get(0).getAddressLine(0), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();

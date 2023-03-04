@@ -89,11 +89,10 @@ public class SafetyTimerActivity extends AppCompatActivity {
                         if (document.exists() && document.getData().get("smsContacts") != null) {
                             for (String numar :(ArrayList<String>) Objects.requireNonNull(document.getData().get("smsContacts"))) {
                                 SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(numar, null, "Safety Time! Probabil am nevoie de ajutor.", null, null);
+                                smsManager.sendTextMessage(numar, null, "Safety Time! I need HELP.", null, null);
                             }
                         }
                     } else {
-                        System.out.println("crapa");
                         Log.d("getContact", "get failed with ", task.getException());
                     }
                 });

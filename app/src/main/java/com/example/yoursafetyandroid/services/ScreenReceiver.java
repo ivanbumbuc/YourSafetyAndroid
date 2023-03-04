@@ -15,7 +15,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     private final Context context;
     private int counter = 0;
-    private FirebaseFirestore dbSOSMENU;
     public static int time = 30;
     public ScreenReceiver(Context context) {
         this.context = context;
@@ -44,20 +43,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void serviceStart() {
-        //addSOSCallToDatabase();
-        Toast.makeText(context, "Power Button pressed 5 times", Toast.LENGTH_LONG).show();
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference docRef = db.collection("contacts").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-//        docRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists() && document.getData().get("smsContacts") != null) {
-//                    SMSService.sendSMS((ArrayList) Objects.requireNonNull(document.getData().get("smsContacts")));
-//                }
-//            } else {
-//                Log.d("getContact", "get failed with ", task.getException());
-//            }
-//        });
+        Toast.makeText(context, "Power Button pressed, SOS has been activated!", Toast.LENGTH_LONG).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
