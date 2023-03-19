@@ -1,17 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".menu.HistoryFragment">
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".menu.HistoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="192dp"
+        android:layout_height="69dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-black"
+        android:text="History of Locations"
+        android:textColor="#050505"
+        android:textSize="30dp"
+        mapbox:layout_constraintEnd_toEndOf="parent"
+        mapbox:layout_constraintHorizontal_bias="0.062"
+        mapbox:layout_constraintStart_toStartOf="parent"
+        mapbox:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/dateHistory"
+        android:layout_width="117dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="34dp"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="#040303"
+        mapbox:layout_constraintBottom_toTopOf="@+id/mapViewHistory"
+        mapbox:layout_constraintEnd_toEndOf="parent"
+        mapbox:layout_constraintHorizontal_bias="0.238"
+        mapbox:layout_constraintStart_toStartOf="@+id/textView4"
+        mapbox:layout_constraintTop_toTopOf="parent"
+        mapbox:layout_constraintVertical_bias="1.0" />
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapViewHistory"
+        android:layout_width="414dp"
+        android:layout_height="708dp"
+        android:layout_marginTop="20dp"
+        mapbox:layout_constraintEnd_toEndOf="parent"
+        mapbox:layout_constraintHorizontal_bias="0.0"
+        mapbox:layout_constraintStart_toStartOf="parent"
+        mapbox:layout_constraintTop_toBottomOf="@+id/textView4"
+        mapbox:mapbox_cameraTargetLat="45.760696"
+        mapbox:mapbox_cameraTargetLng="21.226788"
+        mapbox:mapbox_cameraZoom="2" />
+
+    <TextView
+        android:id="@+id/selectDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="50dp"
-        android:text="History" />
+        android:layout_marginTop="5dp"
+        android:text="Please select a date!"
+        android:textColor="#ED0707"
+        mapbox:layout_constraintBottom_toTopOf="@+id/mapViewHistory"
+        mapbox:layout_constraintEnd_toEndOf="@+id/dateHistory"
+        mapbox:layout_constraintStart_toStartOf="@+id/dateHistory"
+        mapbox:layout_constraintTop_toBottomOf="@+id/dateHistory"
+        mapbox:layout_constraintVertical_bias="0.0" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
