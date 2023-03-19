@@ -8,7 +8,7 @@ android:layout_height="match_parent"
 tools:context=".menu.HistoryFragment">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/historyView"
         android:layout_width="192dp"
         android:layout_height="69dp"
         android:layout_gravity="center"
@@ -37,7 +37,7 @@ tools:context=".menu.HistoryFragment">
         mapbox:layout_constraintBottom_toTopOf="@+id/mapViewHistory"
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintHorizontal_bias="0.238"
-        mapbox:layout_constraintStart_toStartOf="@+id/textView4"
+        mapbox:layout_constraintStart_toStartOf="@+id/historyView"
         mapbox:layout_constraintTop_toTopOf="parent"
         mapbox:layout_constraintVertical_bias="1.0" />
 
@@ -49,7 +49,7 @@ tools:context=".menu.HistoryFragment">
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintHorizontal_bias="0.0"
         mapbox:layout_constraintStart_toStartOf="parent"
-        mapbox:layout_constraintTop_toBottomOf="@+id/textView4"
+        mapbox:layout_constraintTop_toBottomOf="@+id/historyView"
         mapbox:mapbox_cameraTargetLat="45.760696"
         mapbox:mapbox_cameraTargetLng="21.226788"
         mapbox:mapbox_cameraZoom="2" />

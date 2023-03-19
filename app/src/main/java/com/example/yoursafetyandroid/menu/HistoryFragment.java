@@ -2,6 +2,7 @@ package com.example.yoursafetyandroid.menu;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -51,6 +52,7 @@ public class HistoryFragment extends Fragment {
     final Calendar myCalendar= Calendar.getInstance();
     private EditText editText;
     private TextView selectDate;
+    private TextView historyView;
     private FirebaseFirestore db;
 
     @Override
@@ -81,6 +83,7 @@ public class HistoryFragment extends Fragment {
         });
 
         editText=(EditText)rootView.findViewById(R.id.dateHistory);
+        historyView=(TextView) rootView.findViewById(R.id.historyView);
         selectDate = (TextView)rootView.findViewById(R.id.selectDate);
         DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -100,6 +103,7 @@ public class HistoryFragment extends Fragment {
                             if(map2 != null)
                             {
                                 map.clear();
+                                mapView.invalidate();
                                 double latitude = 0;
                                 double longitude = 0;
                                 int i = 1;
@@ -110,11 +114,19 @@ public class HistoryFragment extends Fragment {
                                     addMarkerToMap(latitude,longitude, entry.getKey(), i);
                                     i++;
                                 }
+                                switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                                    case Configuration.UI_MODE_NIGHT_YES:
+                                        selectDate.setTextColor(Color.WHITE);
+                                        break;
+                                    case Configuration.UI_MODE_NIGHT_NO:
+                                        selectDate.setTextColor(Color.BLACK);
+                                        break;
+                                }
                                 selectDate.setText("Below is the route!");
-                                selectDate.setTextColor(Color.BLACK);
                             }
                             else
                             {
+                                map.clear();
                                 selectDate.setText("There is no history!");
                                 selectDate.setTextColor(Color.RED);
                             }
@@ -130,6 +142,16 @@ public class HistoryFragment extends Fragment {
             }
         });
 
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                historyView.setTextColor(Color.WHITE);
+                editText.setTextColor(Color.WHITE);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                historyView.setTextColor(Color.BLACK);
+                editText.setTextColor(Color.BLACK);
+                break;
+        }
         return rootView;
     }
 
@@ -152,6 +174,7 @@ public class HistoryFragment extends Fragment {
     {
         super.onStop();
         mapView.onStop();
+        map.clear();
         editText.setText("");
     }
 
