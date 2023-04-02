@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.FragmentTransitionSupport;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MenuActivity extends AppCompatActivity {
 
     public static Context context;
+    public static Activity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class MenuActivity extends AppCompatActivity {
         HistoryFragment historyFragment = new HistoryFragment();
         SettingsFragment settingsFragment = new SettingsFragment();
         context = MenuActivity.this;
+        activity = MenuActivity.this;
         Intent backgroundService = new Intent(this, ScreenService.class);
         startService(backgroundService);
         BottomNavigationView bottomBar = findViewById(R.id.bottomNavigationView);

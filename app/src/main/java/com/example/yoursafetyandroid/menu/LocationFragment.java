@@ -2,27 +2,33 @@ package com.example.yoursafetyandroid.menu;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.location.LocationService;
 import com.example.yoursafetyandroid.location.TimeLocation;
+import com.example.yoursafetyandroid.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,12 +60,53 @@ public class LocationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(MenuActivity.context, getString(R.string.mapbox_access_token));
-        if( ActivityCompat.checkSelfPermission(MenuActivity.context, Manifest.permission.ACCESS_BACKGROUND_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
-            TimeLocation time = new TimeLocation(MenuActivity.context);
-            time.cancelTime();
-            time.setTime();
+
+        getLocationPermission();
+
         }
+    private void getLocationPermission() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(MenuActivity.context,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(MenuActivity.context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            TimeLocation time = new TimeLocation(MenuActivity.context);
+//            time.cancelTime();
+//            time.setTime();
+            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+            MenuActivity.context.stopService(serviceIntent);
+            MenuActivity.context.startService(serviceIntent);
+            Toast.makeText(MenuActivity.context, "Share location has been activated!", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+            MenuActivity.context.stopService(serviceIntent);
+            Toast.makeText(MenuActivity.context, "Need to allow permission!", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(MenuActivity.activity, permissions, 44);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+//                TimeLocation time = new TimeLocation(MenuActivity.context);
+//                time.cancelTime();
+//
+                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+                MenuActivity.context.stopService(serviceIntent);
+                MenuActivity.context.startService(serviceIntent);
+                Toast.makeText(MenuActivity.context, "Share location has been activated!", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+                MenuActivity.context.stopService(serviceIntent);
+                Toast.makeText(MenuActivity.context, "Permission denied to share location, go check permission location!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,7 +209,7 @@ public class LocationFragment extends Fragment {
                 }
             });
             addMarkerAndGetLocation(db, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-            handler.postDelayed(this,4000);
+            handler.postDelayed(this,2000);
 
         }
     }
@@ -187,10 +234,15 @@ public class LocationFragment extends Fragment {
             options.title("Your location");
            options.icon(drawableToIcon(MenuActivity.context,R.drawable.my_location_marker));
            options.position(new LatLng(latitude, longitude));
+            CameraPosition position = new CameraPosition.Builder()
+                    .target(new LatLng(latitude, longitude)) // The location you want to zoom to
+                    .zoom(13)
+                    .build();
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000);
         }
         else
         {
-            options.position(new LatLng(latitude + Math.random(), longitude + Math.random()));
+            options.position(new LatLng(latitude , longitude ));
             if (danger) {
                 options.title("I am in danger, i need help!!");
                 options.icon(drawableToIcon(MenuActivity.context,R.drawable.help_location));

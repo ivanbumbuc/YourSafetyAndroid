@@ -40,7 +40,9 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -107,13 +109,15 @@ public class HistoryFragment extends Fragment {
                                 double latitude = 0;
                                 double longitude = 0;
                                 int i = 1;
+                                List<MarkerOptions > markerOptionsList = new ArrayList<>();
                                 for (Map.Entry<String,String> entry : map2.entrySet()) {
                                     String[] x = entry.getValue().split("-");
                                     latitude = Double.parseDouble(x[0]);
                                     longitude = Double.parseDouble(x[1]);
-                                    addMarkerToMap(latitude,longitude, entry.getKey(), i);
+                                   markerOptionsList.add(addMarkerToMap(latitude,longitude, entry.getKey(), i));
                                     i++;
                                 }
+                                map.addMarkers(markerOptionsList);
                                 switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
                                     case Configuration.UI_MODE_NIGHT_YES:
                                         selectDate.setTextColor(Color.WHITE);
@@ -198,7 +202,7 @@ public class HistoryFragment extends Fragment {
         editText.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    private void addMarkerToMap(double latitude, double longitude,String hour,int number)
+    private MarkerOptions addMarkerToMap(double latitude, double longitude,String hour,int number)
     {
         MarkerOptions options  = new MarkerOptions();
         if(number == 1) {
@@ -216,7 +220,8 @@ public class HistoryFragment extends Fragment {
                 options.icon(drawableToIcon(MenuActivity.context, R.drawable.mid_history));
                 options.position(new LatLng(latitude, longitude));
         }
-        map.addMarker(options);
+       // map.addMarker(options);
+        return options;
     }
 
 
