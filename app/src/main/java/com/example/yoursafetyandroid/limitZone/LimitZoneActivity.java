@@ -195,6 +195,7 @@ public class LimitZoneActivity extends AppCompatActivity {
                 .icon(iconFactory.defaultMarker());
         mapboxMap.addMarker(markerOptions);
 
+
         // Add a red circle around the marker
         GeoJsonSource circleSource = new GeoJsonSource("circle-source", Point.fromLngLat(latLng.getLongitude(), latLng.getLatitude()));
         mapboxMap.getStyle().addSource(circleSource);
