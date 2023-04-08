@@ -199,6 +199,7 @@ public class LimitZoneActivity extends AppCompatActivity {
         GeoJsonSource circleSource = new GeoJsonSource("circle-source", Point.fromLngLat(latLng.getLongitude(), latLng.getLatitude()));
         mapboxMap.getStyle().addSource(circleSource);
 
+
         CircleLayer circleLayer = new CircleLayer("circle-layer", "circle-source");
         circleLayer.setProperties(
                 circleColor(Color.RED),
