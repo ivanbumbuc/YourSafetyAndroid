@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.safetyTimer.SafetyTimerActivity;
 
 
 public class HomeFragment extends Fragment {
 
     private ImageView safetyTimer;
-
+    private ImageView limitZone;
     public HomeFragment() {
 
     }
@@ -34,7 +35,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         safetyTimer = (ImageView) rootView.findViewById(R.id.imageViewSafetyTimerButton);
-
+        limitZone = (ImageView) rootView.findViewById(R.id.limitZone);
         buttonsActions();
         return rootView;
     }
@@ -45,6 +46,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent sessionIntent = new Intent(getActivity(), SafetyTimerActivity.class);
+                sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(sessionIntent);
+            }
+        });
+
+        limitZone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sessionIntent = new Intent(getActivity(), LimitZoneActivity.class);
                 sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(sessionIntent);
             }

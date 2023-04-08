@@ -16,7 +16,6 @@ import android.view.MenuItem;
 
 
 import com.example.yoursafetyandroid.R;
-import com.example.yoursafetyandroid.databinding.ActivityMainBinding;
 import com.example.yoursafetyandroid.services.ScreenService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
