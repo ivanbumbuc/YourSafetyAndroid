@@ -27,14 +27,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YourSafetyAndroid"
         tools:targetApi="31">
+        <service
+            android:name=".pushNotification.NotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".limitZone.LimitZoneActivity"
-            android:launchMode="singleTop"
-            android:exported="false">
+            android:exported="false"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <receiver
             android:name=".location.LocationReceiver"
             android:enabled="true"
@@ -72,6 +78,13 @@
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
+        <service
+            android:name=".pushNotification.PushNotification"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".menu.MenuActivity"

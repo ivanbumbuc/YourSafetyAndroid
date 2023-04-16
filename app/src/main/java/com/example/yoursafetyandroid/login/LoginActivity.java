@@ -3,7 +3,9 @@ package com.example.yoursafetyandroid.login;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.menu.MenuActivity;
+import com.example.yoursafetyandroid.pushNotification.NotificationService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -61,6 +64,11 @@ public class LoginActivity extends AppCompatActivity {
                         progres.dismiss();
                         logat();
                         Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        boolean isMyServiceRunning = isServiceRunning(NotificationService.class);
+                        if (isMyServiceRunning) {
+                            Intent startServiceIntent = new Intent(this, NotificationService.class);
+                            stopService(startServiceIntent);
+                        }
                     } else {
                         progres.dismiss();
                         Toast.makeText(LoginActivity.this, "Login failed, email or password incorrect!", Toast.LENGTH_SHORT).show();
@@ -78,6 +86,16 @@ public class LoginActivity extends AppCompatActivity {
         // making sure activity stack is cleared before starting landing activity
         sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(sessionIntent);
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.yoursafetyandroid.menu;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,7 +13,11 @@ import android.widget.ImageView;
 
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
+import com.example.yoursafetyandroid.pushNotification.NotificationService;
 import com.example.yoursafetyandroid.safetyTimer.SafetyTimerActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class HomeFragment extends Fragment {
