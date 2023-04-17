@@ -32,6 +32,10 @@
             android:enabled="true"
             android:exported="true" />
 
+        <service android:name=".limitZone.LimitZoneService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".limitZone.LimitZoneActivity"
             android:exported="false"

@@ -65,17 +65,22 @@ public class NotificationService extends Service {
 
     private void doWork() {
         DocumentReference docRef = db.collection("liveLocation").document(Objects.requireNonNull(uid));
-        System.out.println(docRef);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                System.out.println(document.getData());
                 if (document.exists() && Integer.parseInt(document.getData().get("typeMessage").toString()) != NotificationType.NONE) {
+
                     if(Integer.parseInt(document.getData().get("typeMessage").toString()) == NotificationType.ZONE_LIMIT)
                     {
                         String message = document.getData().get("message").toString();
                         showNotification("Zone Limit",message);
                     }
+                    else if(Integer.parseInt(document.getData().get("typeMessage").toString()) == NotificationType.ALERT_ZONE_LIMIT)
+                    {
+                        String message = document.getData().get("message").toString();
+                        showNotification("Alert limit zone from child!",message);
+                    }
+
                     Map<String,Object> info=new HashMap<>();
                     info.put("typeMessage",0);
                     info.put("message","");

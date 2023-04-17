@@ -1,6 +1,5 @@
 package com.example.yoursafetyandroid.limitZone;
 
-import static android.app.PendingIntent.getActivity;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleOpacity;
@@ -82,10 +81,18 @@ public class LimitZoneActivity extends AppCompatActivity {
     private EditText textSearch;
     private Button searchButton;
     private Button clearMarkers;
+    private Button stoplimitZone;
 
     private Handler handlerChild;
     private Runnable runnableChild;
     private boolean clearMap = false;
+
+    private double latitudeSet;
+    private double longitudeSet;
+
+    private static boolean isParent = false;
+    private static boolean isChild = false;
+    private static String child = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,9 @@ public class LimitZoneActivity extends AppCompatActivity {
         mapView = (MapView) findViewById(R.id.limitZoneMap);
         mapView.onCreate(savedInstanceState);
 
+        showDialogButton = findViewById(R.id.addButtonMapBox);
+        clearMarkers= findViewById(R.id.clearButtonMapBox);
+        stoplimitZone = findViewById(R.id.buttonStopLimitZone);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -107,7 +117,7 @@ public class LimitZoneActivity extends AppCompatActivity {
 
                     }
                 });
-                showDialogButton = findViewById(R.id.addButtonMapBox);
+
                 showDialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -119,7 +129,11 @@ public class LimitZoneActivity extends AppCompatActivity {
                     public boolean onMapClick(@NonNull LatLng point) {
                         // Add a marker at the clicked location
                         double circleRadius = 80; // Change this value to set the circle's radius
-                        if(!isOnMap && !isParent() && !isChildForParent()) {
+                        isParent();
+                        isChildForParent();
+                        if(!isOnMap && !isParent && !isChild) {
+                            latitudeSet = point.getLatitude();
+                            longitudeSet = point.getLongitude();
                             addMarkerWithRedCircle(mapboxMap, point, circleRadius);
                             CameraPosition position = new CameraPosition.Builder()
                                     .target(point) // The location you want to zoom to
@@ -132,7 +146,7 @@ public class LimitZoneActivity extends AppCompatActivity {
                 });
 
 
-                clearMarkers= findViewById(R.id.clearButtonMapBox);
+
                 clearMarkers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -141,6 +155,63 @@ public class LimitZoneActivity extends AppCompatActivity {
                         showDialogButton.setEnabled(false);
                         isOnMap = false;
                     }
+                });
+
+                stoplimitZone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        isParent = false;
+                        isChild = false;
+                        stoplimitZone.setEnabled(false);
+                        map.clear();
+                        isOnMap = false;
+                        removeCircle(map);
+                        String parent = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                        DocumentReference docRef2 = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        docRef2.get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    if(document.getData().get("user").toString() != null)
+                                       child = document.getData().get("user").toString();
+                                }
+                            }
+                        });
+                        Map<String,Object> info = new HashMap<>();
+                        info.put("type",0);
+                        info.put("user","");
+
+                        db.collection("limitZone").document(parent).update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(MenuActivity.context, "Parent stop limit zone!", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MenuActivity.context, "Error parent stop limit zone!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        db.collection("limitZone").document(child).update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(MenuActivity.context, "Child stop limit zone!", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MenuActivity.context, "Error child stop limit zone!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        reloadActivity();
+                        boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
+                        if (isMyServiceRunningNotificationAlert) {
+                            Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+                            MenuActivity.context.stopService(stopServiceIntent);
+                        }
+                    }
+
                 });
 
             }
@@ -189,21 +260,37 @@ public class LimitZoneActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Your repeating task here
-                if(isChildForParent())
+                isParent();
+                isChildForParent();
+                if(isChild)
                 {
-                    map.clear();
-                    removeCircle(map);
-                    DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                    docRef.get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists() && (int)document.getData().get("type") != LimitType.NONE) {
-                                if((int)document.getData().get("type") == LimitType.CHILD)
-                                {
-                                    double latitude = (double)document.getData().get("latitude");
-                                    double longitude = (double)document.getData().get("longitude");
-                                    LatLng point = new LatLng(latitude,longitude);
-                                    addMarkerWithRedCircle(map, point, 100);
+                    if(map != null) {
+                        map.clear();
+                        removeCircle(map);
+                        DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        docRef.get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists() && Integer.parseInt(document.getData().get("type").toString()) != LimitType.NONE) {
+                                    if (Integer.parseInt(document.getData().get("type").toString()) == LimitType.CHILD) {
+                                        double latitude = (double) document.getData().get("latitude");
+                                        double longitude = (double) document.getData().get("longitude");
+                                        LatLng point = new LatLng(latitude, longitude);
+                                        addMarkerWithRedCircle(map, point, 100);
+                                    }
+                                }
+                            }
+                        });
+
+                        DocumentReference docRef2 = db.collection("liveLocation").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        docRef2.get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    double latitude = (double) document.getData().get("latitude");
+                                    double longitude = (double) document.getData().get("longitude");
+                                    LatLng point = new LatLng(latitude, longitude);
+                                    addMarkerChild(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), latitude, longitude, "Your location");
                                     CameraPosition position = new CameraPosition.Builder()
                                             .target(point) // The location you want to zoom to
                                             .zoom(17)
@@ -211,28 +298,11 @@ public class LimitZoneActivity extends AppCompatActivity {
                                     map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000);
                                 }
                             }
-                        }
-                    });
-
-                    DocumentReference docRef2 = db.collection("liveLocation").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                    docRef2.get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                    double latitude = (double)document.getData().get("latitude");
-                                    double longitude = (double)document.getData().get("longitude");
-                                    LatLng point = new LatLng(latitude,longitude);
-                                    addMarkerChild(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),latitude,longitude,"Your location");
-                                    CameraPosition position = new CameraPosition.Builder()
-                                            .target(point) // The location you want to zoom to
-                                            .zoom(17)
-                                            .build();
-                                    map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000);
-                            }
-                        }
-                    });
+                        });
+                    }
                     showDialogButton.setEnabled(false);
                     clearMarkers.setEnabled(false);
+                    stoplimitZone.setEnabled(false);
                     isOnMap = true;
                     clearMap = true;
 
@@ -241,40 +311,61 @@ public class LimitZoneActivity extends AppCompatActivity {
                         Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
                         MenuActivity.context.startService(startServiceIntent);
                     }
+
+                    boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
+                    if (!isMyServiceRunningNotificationAlert) {
+                        Intent startServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+                        MenuActivity.context.startService(startServiceIntent);
+                    }
 //                    Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
 //                    MenuActivity.context.stopService(serviceIntent);
 //                    MenuActivity.context.startService(serviceIntent);
 
                 }
-                else if(isParent())
+                else if(isParent)
                 {
+                    System.out.println("am intrat la parinte");
                  showDialogButton.setEnabled(false);
-                 clearMarkers.setEnabled(true);
-                 AtomicReference<String> uidChild= new AtomicReference<>("");
+                 clearMarkers.setEnabled(false);
+                 stoplimitZone.setEnabled(true);
+
                     DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                     docRef.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                uidChild.set(document.getData().get("user").toString());
+                                child = document.getData().get("user").toString();
                             }
                         }
                     });
-                 if(!Objects.equals(uidChild.get(), ""))
-                 {
-                     map.clear();
-                     removeCircle(map);
-                     DocumentReference docRef3 = db.collection("limitZone").document(uidChild.get());
-                     docRef3.get().addOnCompleteListener(task -> {
-                         if (task.isSuccessful()) {
-                             DocumentSnapshot document = task.getResult();
-                             if (document.exists() && (int)document.getData().get("type") != LimitType.NONE) {
-                                 if((int)document.getData().get("type") == LimitType.CHILD)
-                                 {
-                                     double latitude = (double)document.getData().get("latitude");
-                                     double longitude = (double)document.getData().get("longitude");
-                                     LatLng point = new LatLng(latitude,longitude);
-                                     addMarkerWithRedCircle(map, point, 100);
+                 if(child!=null) {
+                     if (map != null) {
+                         map.clear();
+                         removeCircle(map);
+                         DocumentReference docRef3 = db.collection("limitZone").document(child);
+                         docRef3.get().addOnCompleteListener(task -> {
+                             if (task.isSuccessful()) {
+                                 DocumentSnapshot document = task.getResult();
+                                 if (document.exists() && Integer.parseInt(document.getData().get("type").toString()) != LimitType.NONE) {
+                                     if (Integer.parseInt(document.getData().get("type").toString()) == LimitType.CHILD) {
+                                         double latitude = (double) document.getData().get("latitude");
+                                         double longitude = (double) document.getData().get("longitude");
+                                         LatLng point = new LatLng(latitude, longitude);
+                                         addMarkerWithRedCircle(map, point, 100);
+                                     }
+                                 }
+                             }
+                         });
+
+                         DocumentReference docRef4 = db.collection("liveLocation").document(child);
+                         docRef4.get().addOnCompleteListener(task -> {
+                             if (task.isSuccessful()) {
+                                 DocumentSnapshot document = task.getResult();
+                                 if (document.exists()) {
+                                     double latitude = (double) document.getData().get("latitude");
+                                     double longitude = (double) document.getData().get("longitude");
+                                     LatLng point = new LatLng(latitude, longitude);
+                                     addMarkerChild(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), latitude, longitude, "Child location");
                                      CameraPosition position = new CameraPosition.Builder()
                                              .target(point) // The location you want to zoom to
                                              .zoom(17)
@@ -282,42 +373,25 @@ public class LimitZoneActivity extends AppCompatActivity {
                                      map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000);
                                  }
                              }
-                         }
-                     });
-
-                     DocumentReference docRef4 = db.collection("liveLocation").document(uidChild.get());
-                     docRef4.get().addOnCompleteListener(task -> {
-                         if (task.isSuccessful()) {
-                             DocumentSnapshot document = task.getResult();
-                             if (document.exists()) {
-                                 double latitude = (double)document.getData().get("latitude");
-                                 double longitude = (double)document.getData().get("longitude");
-                                 LatLng point = new LatLng(latitude,longitude);
-                                 addMarkerChild(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),latitude,longitude,"Child location");
-                                 CameraPosition position = new CameraPosition.Builder()
-                                         .target(point) // The location you want to zoom to
-                                         .zoom(17)
-                                         .build();
-                                 map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000);
-                             }
-                         }
-                     });
+                         });
+                     }
                  }
                 }
                 else
                 {
                     clearMarkers.setEnabled(true);
-                    if(clearMap) {
-                        map.clear();
-                        clearMap = false;
-                    }
                     boolean isMyServiceRunning = isServiceRunning(LocationService.class);
                     if (isMyServiceRunning) {
                         Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
                         MenuActivity.context.stopService(stopServiceIntent);
                     }
+                    boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
+                    if (isMyServiceRunningNotificationAlert) {
+                        Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+                        MenuActivity.context.stopService(stopServiceIntent);
+                    }
                 }
-                handlerChild.postDelayed(this, 3000); // 2000 milliseconds = 2 seconds
+                handlerChild.postDelayed(this, 2000); // 2000 milliseconds = 2 seconds
             }
         };
         handlerChild.post(runnableChild);
@@ -328,36 +402,32 @@ public class LimitZoneActivity extends AppCompatActivity {
 
     }
 
-    private boolean isParent()
+    private void isParent()
     {
-        AtomicBoolean ok = new AtomicBoolean(false);
         DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                if (document.exists() && (int)document.getData().get("type") != LimitType.NONE) {
-                    if((int)document.getData().get("type") == LimitType.PARENT)
-                        ok.set(true);
+                if (document.exists() && Integer.parseInt(document.getData().get("type").toString()) != LimitType.NONE) {
+                    isParent = Integer.parseInt(document.getData().get("type").toString()) == LimitType.PARENT;
                 }
             }
         });
-        return ok.get();
+        System.out.println(isParent);
     }
 
-    private boolean isChildForParent()
+    private void isChildForParent()
     {
         AtomicBoolean ok = new AtomicBoolean(false);
         DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                if (document.exists() && (int)document.getData().get("type") != LimitType.NONE) {
-                    if((int)document.getData().get("type") == LimitType.CHILD)
-                        ok.set(true);
+                if (document.exists() && Integer.parseInt(document.getData().get("type").toString()) != LimitType.NONE) {
+                    isChild = Integer.parseInt(document.getData().get("type").toString()) == LimitType.CHILD;
                 }
             }
         });
-        return ok.get();
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -396,6 +466,11 @@ public class LimitZoneActivity extends AppCompatActivity {
         return IconFactory.getInstance(context).fromBitmap(bitmap);
     }
 
+    private void reloadActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 
     @Override
     public void onStart()
@@ -466,6 +541,44 @@ public class LimitZoneActivity extends AppCompatActivity {
                                     Toast.makeText(MenuActivity.context, "Error send request!", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                            String parent = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                            Map<String,Object> info2=new HashMap<>();
+                            info2.put("type",2);
+                            info2.put("user",parent);
+                            info2.put("latitude",latitudeSet);
+                            info2.put("longitude",longitudeSet);
+                            db.collection("limitZone").document(userInput).update(info2).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MenuActivity.context, "Child has set!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MenuActivity.context, "Error set child!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+                            Map<String,Object> info3=new HashMap<>();
+                            info3.put("type",1);
+                            info3.put("user",userInput);
+                            info3.put("latitude",latitudeSet);
+                            info3.put("longitude",longitudeSet);
+                            db.collection("limitZone").document(parent).update(info3).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MenuActivity.context, "Parent has set!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MenuActivity.context, "Error set parent!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            showDialogButton.setEnabled(false);
+                            clearMarkers.setEnabled(false);
+                            stoplimitZone.setEnabled(true);
                         }
                         else
                         {
@@ -515,7 +628,8 @@ public class LimitZoneActivity extends AppCompatActivity {
         );
         mapboxMap.getStyle().addLayer(circleLayer);
         isOnMap = true;
-        showDialogButton.setEnabled(true);
+        if(!isChild && !isParent)
+            showDialogButton.setEnabled(true);
     }
 
 
@@ -538,20 +652,6 @@ public class LimitZoneActivity extends AppCompatActivity {
                 style.removeSource(circleSource);
             }
         }
-    }
-
-    private double calculateDistance(LatLng latLng1, LatLng latLng2) {
-        // Create Location objects from LatLng
-        Location location1 = new Location("Location 1");
-        location1.setLatitude(latLng1.getLatitude());
-        location1.setLongitude(latLng1.getLongitude());
-
-        Location location2 = new Location("Location 2");
-        location2.setLatitude(latLng2.getLatitude());
-        location2.setLongitude(latLng2.getLongitude());
-
-        // Calculate the distance in meters
-        return location1.distanceTo(location2);
     }
 
     private void showFailureDialog(String title,String text) {
