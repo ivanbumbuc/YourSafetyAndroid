@@ -203,4 +203,9 @@ public class SafetyTimerActivity extends AppCompatActivity {
         NotificationManagerCompat.from(context).notify(id, notification);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 }

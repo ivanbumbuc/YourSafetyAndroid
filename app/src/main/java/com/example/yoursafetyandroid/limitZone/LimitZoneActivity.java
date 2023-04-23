@@ -678,5 +678,10 @@ public class LimitZoneActivity extends AppCompatActivity {
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#33ccff"));
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 
 }
