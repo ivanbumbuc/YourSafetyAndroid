@@ -1,33 +1,29 @@
-package com.example.yoursafetyandroid.location;
+package com.example.yoursafetyandroid.locationHistory;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-
-import android.os.Build;
+import android.app.Service;
+import android.content.Intent;
 import android.os.Handler;
+import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.yoursafetyandroid.location.Location;
+import com.example.yoursafetyandroid.location.LocationReceiver;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 
-public class LocationService extends Service {
-
+public class HistoryLocationService extends Service {
     private static final int NOTIFICATION_ID = 1;
-    private static final String CHANNEL_ID = "MyServiceChannel";
-    private Location location;
-    private Handler handler;
-    private Runnable runnable;
+    private static final String CHANNEL_ID = "History Location";
+    private HistoryLocation historyLocation;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        handler = new Handler();
     }
 
     @Override
@@ -36,7 +32,7 @@ public class LocationService extends Service {
         Intent notificationIntent = new Intent(this, MenuActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Location Service")
+                .setContentTitle("History Location Service")
                 .setContentText("Service is running in the background.")
                 .setContentIntent(pendingIntent)
                 .build();
@@ -44,27 +40,15 @@ public class LocationService extends Service {
         startForeground(NOTIFICATION_ID, notification);
 
         if(MenuActivity.context!=null) {
-            location = new Location();
+            historyLocation = new HistoryLocation();
         }
-//        runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                if(MenuActivity.context!=null) {
-//                    new Location();
-//                }
-//                handler.postDelayed(this, 4 * 1000); // Repeat every 4 seconds
-//            }
-//        };
-//        handler.post(runnable);
-
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-      super.onDestroy();
-      System.out.println("helllllllllllllllllooooo------------------------");
-      location.stopLocationUpdates();
+        super.onDestroy();
+        historyLocation.stopLocationUpdates();
     }
 
     @Nullable

@@ -94,6 +94,46 @@
                 app:layout_constraintStart_toEndOf="@+id/limitZone"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewSafetyTimerButton" />
 
+
+            <ImageView
+                android:id="@+id/RecordingView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/zonelimit"
+                app:layout_constraintEnd_toStartOf="@+id/locationImageView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/limitZone"
+                app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+            <ImageView
+                android:id="@+id/FakeCallView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/zonelimit"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/locationImageView"
+                app:layout_constraintTop_toBottomOf="@+id/locationImageView"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <ImageView
+                android:id="@+id/imageViewButton"
+                android:layout_width="369dp"
+                android:layout_height="186dp"
+                android:layout_marginTop="624dp"
+                android:outlineAmbientShadowColor="#735656"
+                android:outlineSpotShadowColor="#613B3B"
+
+                android:src="@drawable/timebackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.833"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="120dp"
@@ -144,6 +184,67 @@
                 app:layout_constraintHorizontal_bias="0.36"
                 app:layout_constraintStart_toStartOf="@+id/locationImageView"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Recording"
+                android:textColor="#040404"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/RecordingView"
+                app:layout_constraintHorizontal_bias="0.283"
+                app:layout_constraintStart_toStartOf="@+id/RecordingView"
+                app:layout_constraintTop_toTopOf="@+id/RecordingView" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="110dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/undraw_next_option_re_r9uf"
+                app:layout_constraintEnd_toEndOf="@+id/RecordingView"
+                app:layout_constraintHorizontal_bias="0.472"
+                app:layout_constraintStart_toStartOf="@+id/RecordingView"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="319dp"
+                android:layout_height="34dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/zonelimit"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewButton"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="@+id/imageViewButton"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewButton" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fake Call"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/FakeCallView"
+                app:layout_constraintHorizontal_bias="0.281"
+                app:layout_constraintStart_toStartOf="@+id/FakeCallView"
+                app:layout_constraintTop_toTopOf="@+id/FakeCallView" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="104dp"
+                android:layout_height="81dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/undraw_night_calls__5_jh7"
+                app:layout_constraintEnd_toEndOf="@+id/FakeCallView"
+                app:layout_constraintHorizontal_bias="0.428"
+                app:layout_constraintStart_toStartOf="@+id/FakeCallView"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

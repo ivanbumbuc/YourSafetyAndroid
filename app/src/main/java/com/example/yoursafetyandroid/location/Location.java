@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.main.MainActivity;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -122,48 +123,47 @@ public class Location {
 
 
     private void getLocation() {
-        if(locationCallback != null)
-            fusedLocationClient.removeLocationUpdates(locationCallback);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(MenuActivity.context);
+            if (locationCallback != null)
+                fusedLocationClient.removeLocationUpdates(locationCallback);
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(MenuActivity.context);
 
-        locationRequest = LocationRequest.create();
-       locationRequest.setInterval(2000); // Update interval in milliseconds
-        locationRequest.setFastestInterval(2000); // Fastest update interval in milliseconds
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest = LocationRequest.create();
+            locationRequest.setInterval(2000); // Update interval in milliseconds
+            locationRequest.setFastestInterval(2000); // Fastest update interval in milliseconds
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                for (android.location.Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        FirebaseAuth auth=FirebaseAuth.getInstance();
-                        FirebaseUser user=auth.getCurrentUser();
-                        FirebaseFirestore db=FirebaseFirestore.getInstance();// initializam instanta la baza de date
-                        if(user!=null) {
-                            Map<String,Object> info=new HashMap<>();
-                            info.put("latitude",latitude);
-                            info.put("longitude",longitude);
-                            db.collection("liveLocation").document(user.getUid()).update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    //Toast.makeText(MenuActivity.context, "Location shared!", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MenuActivity.context, "Error saves location try again later!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (android.location.Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            FirebaseUser user = auth.getCurrentUser();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();// initializam instanta la baza de date
+                            if (user != null) {
+                                Map<String, Object> info = new HashMap<>();
+                                info.put("latitude", latitude);
+                                info.put("longitude", longitude);
+                                db.collection("liveLocation").document(user.getUid()).update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        //Toast.makeText(MenuActivity.context, "Location shared!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(MenuActivity.context, "Error saves location try again later!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            System.out.println(latitude + " " + longitude + " --------------------------");
                         }
-                        System.out.println(latitude + " "+ longitude + " --------------------------");
-                        // Use the latitude and longitude values
                     }
                 }
-            }
-        };
-        startLocationUpdates();
+            };
+            startLocationUpdates();
     }
 
     private void startLocationUpdates() {
@@ -174,5 +174,10 @@ public class Location {
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
+    public void stopLocationUpdates() {
+        if (fusedLocationClient != null && locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
+    }
 
 }

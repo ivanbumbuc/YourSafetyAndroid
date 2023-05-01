@@ -11,8 +11,12 @@
         android:id="@+id/mapView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="#DAD3D3"
+        android:hapticFeedbackEnabled="false"
         mapbox:mapbox_cameraTargetLat="45.760696"
         mapbox:mapbox_cameraTargetLng="21.226788"
-        mapbox:mapbox_cameraZoom="2"/>
+        mapbox:mapbox_cameraZoom="2">
+
+    </com.mapbox.mapboxsdk.maps.MapView>
 
 </RelativeLayout>

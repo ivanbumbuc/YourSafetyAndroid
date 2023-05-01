@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.fakeCall.FakeCallActivity;
 import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.location.LocationActivity;
+import com.example.yoursafetyandroid.recorder.RecorderActivity;
 import com.example.yoursafetyandroid.safetyTimer.SafetyTimerActivity;
 
 
@@ -21,6 +23,8 @@ public class HomeFragment extends Fragment {
     private ImageView safetyTimer;
     private ImageView limitZone;
     private ImageView location;
+    private ImageView recording;
+    private ImageView fakeCall;
     public HomeFragment() {
 
     }
@@ -39,6 +43,8 @@ public class HomeFragment extends Fragment {
         safetyTimer = (ImageView) rootView.findViewById(R.id.imageViewSafetyTimerButton);
         limitZone = (ImageView) rootView.findViewById(R.id.limitZone);
         location = (ImageView) rootView.findViewById(R.id.locationImageView);
+        recording = (ImageView) rootView.findViewById(R.id.RecordingView);
+        fakeCall = (ImageView) rootView.findViewById(R.id.FakeCallView);
         buttonsActions();
         return rootView;
     }
@@ -71,6 +77,22 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        recording.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recorder = new Intent(getActivity(), RecorderActivity.class);
+                startActivity(recorder);
+            }
+        });
+
+        fakeCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent fakeCall = new Intent(getActivity(), FakeCallActivity.class);
+                startActivity(fakeCall);
+            }
+        });
+       
     }
 
 }

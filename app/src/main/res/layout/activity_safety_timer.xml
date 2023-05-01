@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#33CCFF">
+    android:layout_height="match_parent">
 
 
     <NumberPicker
@@ -54,10 +53,10 @@
         android:id="@+id/buttonStartStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="#33CCFF"
         android:onClick="startStop"
         android:text="START"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,19 +102,44 @@
         app:layout_constraintTop_toBottomOf="@+id/progressBarCircle"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="128dp"
+        android:layout_height="155dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonStartStop"
+        app:srcCompat="@drawable/undraw_time_management_re_tk5w__1_" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="158dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonStartStop"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonStartStop"
+        app:srcCompat="@drawable/undraw_reading_time_re_phf7" />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="336dp"
-        android:layout_height="22dp"
+        android:layout_width="334dp"
+        android:layout_height="21dp"
         android:text="If you don't stop it in time, it will send emergency messages!"
         android:textColor="#EC2020"
         android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.573"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStartStop"
-        app:layout_constraintVertical_bias="0.337" />
+        app:layout_constraintVertical_bias="0.957" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

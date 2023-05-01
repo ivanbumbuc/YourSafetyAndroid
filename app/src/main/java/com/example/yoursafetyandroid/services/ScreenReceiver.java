@@ -1,15 +1,20 @@
 package com.example.yoursafetyandroid.services;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.recorder.Recorder;
 
 public class ScreenReceiver extends BroadcastReceiver {
 
@@ -35,6 +40,8 @@ public class ScreenReceiver extends BroadcastReceiver {
         counter++;
         if(counter == 5) {
             serviceStart();
+            recorder();
+            fakeCall();
             return;
         }
         timer.cancel();
@@ -54,4 +61,35 @@ public class ScreenReceiver extends BroadcastReceiver {
             count();
         }
     }
+
+    private void recorder()
+    {
+
+        CountDownTimer countDowntimer = new CountDownTimer(time * 1000L, time * 1000L) {
+            public void onTick(long millisUntilFinished) {
+                Toast.makeText(context, "Recording has started", Toast.LENGTH_LONG).show();
+                Recorder.startRecording2();
+            }
+
+
+            public void onFinish() {
+                Toast.makeText(context, "Recording has stopped", Toast.LENGTH_LONG).show();
+                Recorder.stopRecording();
+
+            }};countDowntimer.start();
+    }
+
+    private void fakeCall()
+    {
+        Vibrator vibrator=(Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(2000);
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(Information.phoneFake!=null)
+            intent.setData(Uri.parse("tel: "+ Information.phoneFake));
+        else
+            intent.setData(Uri.parse("tel: 0722222222"));
+        context.startActivity(intent);
+    }
+
 }

@@ -11,21 +11,29 @@ import androidx.transition.FragmentTransitionSupport;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.pushNotification.NotificationService;
 import com.example.yoursafetyandroid.services.ScreenService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.io.File;
+import java.util.Calendar;
+
 public class MenuActivity extends AppCompatActivity {
 
     public static Context context;
     public static Activity activity;
+    public static String pathForRecording;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +50,8 @@ public class MenuActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,homeFragment).commit();
 
+        pathForRecording = getFilePathRecording();
+        initShareInfromation();
 
         bottomBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -85,4 +95,16 @@ public class MenuActivity extends AppCompatActivity {
         return false;
     }
 
+    private static String getFilePathRecording()
+    {
+        ContextWrapper contextWrapper=new ContextWrapper(context.getApplicationContext());
+        File musicD=contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file=new File(musicD,"recording_" + Calendar.getInstance().getTime() +".mp3");
+        return file.getPath();
+    }
+
+    private void initShareInfromation()
+    {
+        Information.getShareLocationValue = Information.sharedPreferences.getString(Information.shareLocation, "");
+    }
 }

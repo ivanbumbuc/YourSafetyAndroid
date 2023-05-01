@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.locationHistory.HistoryLocation;
+import com.example.yoursafetyandroid.locationHistory.HistoryLocationService;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,14 +32,12 @@ import java.util.Objects;
 
 public class LocationActivity extends AppCompatActivity {
 
-    private  FirebaseFirestore db;
     private Switch buttonOnOffLocation;
     private Switch buttonOnOffHistory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        db = FirebaseFirestore.getInstance();
         buttonOnOffLocation = findViewById(R.id.switchLocation);
         buttonOnOffHistory = findViewById(R.id.switchHistory);
         setButtonsEnable();
@@ -47,6 +50,7 @@ public class LocationActivity extends AppCompatActivity {
 
     private void setButtonsEnable()
     {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef2 = db.collection("liveLocation").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         docRef2.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -65,6 +69,8 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                System.out.println(user);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 if(b)
                 {
                     boolean isMyServiceRunning = isServiceRunning(LocationService.class);
@@ -87,6 +93,10 @@ public class LocationActivity extends AppCompatActivity {
                             Toast.makeText(MenuActivity.context, "Error set location!", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                    editor.putString(Information.shareLocation, "on");
+                    editor.commit();
+                    Information.getShareLocationValue = Information.sharedPreferences.getString(Information.shareLocation, "");
                 }
                 else
                 {
@@ -109,6 +119,10 @@ public class LocationActivity extends AppCompatActivity {
                             Toast.makeText(MenuActivity.context, "Error set location!", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                    editor.putString(Information.shareLocation, "off");
+                    editor.commit();
+                    Information.getShareLocationValue = Information.sharedPreferences.getString(Information.shareLocation, "");
                 }
             }
         });
@@ -120,8 +134,14 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 if(b)
                 {
+                    boolean isMyServiceRunning = isServiceRunning(HistoryLocationService.class);
+                    if (!isMyServiceRunning) {
+                        Intent startServiceIntent = new Intent(MenuActivity.context, HistoryLocationService.class);
+                        MenuActivity.context.startService(startServiceIntent);
+                    }
                     Map<String,Object> info = new HashMap<>();
                     info.put("historyLocation",true);
 
@@ -141,6 +161,11 @@ public class LocationActivity extends AppCompatActivity {
                 {
                     Map<String,Object> info = new HashMap<>();
                     info.put("historyLocation",false);
+                    boolean isMyServiceRunning = isServiceRunning(HistoryLocationService.class);
+                    if (isMyServiceRunning) {
+                        Intent stopServiceIntent = new Intent(MenuActivity.context, HistoryLocationService.class);
+                        MenuActivity.context.stopService(stopServiceIntent);
+                    }
 
                     db.collection("liveLocation").document(user).update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
