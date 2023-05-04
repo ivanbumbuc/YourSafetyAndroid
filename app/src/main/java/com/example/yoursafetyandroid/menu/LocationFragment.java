@@ -79,30 +79,30 @@ public class LocationFragment extends Fragment {
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(MenuActivity.context,
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && Information.getShareLocationValue.equals("on")) {
-//            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
-//            MenuActivity.context.stopService(serviceIntent);
-//            MenuActivity.context.startService(serviceIntent);
+            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+            MenuActivity.context.stopService(serviceIntent);
+            MenuActivity.context.startService(serviceIntent);
             Toast.makeText(MenuActivity.context, "Share location has been activated!", Toast.LENGTH_SHORT).show();
         } else {
-//            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
-//            MenuActivity.context.stopService(serviceIntent);
+            Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+            MenuActivity.context.stopService(serviceIntent);
             Toast.makeText(MenuActivity.context, "Need to allow permission!", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(MenuActivity.activity, permissions, 44);
         }
     }
-
+    
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 44) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED && Information.getShareLocationValue.equals("on")) {
-//                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
-//                MenuActivity.context.stopService(serviceIntent);
-//                MenuActivity.context.startService(serviceIntent);
+                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+                MenuActivity.context.stopService(serviceIntent);
+                MenuActivity.context.startService(serviceIntent);
                 Toast.makeText(MenuActivity.context, "Share location has been activated!", Toast.LENGTH_SHORT).show();
             } else {
-//                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
-//                MenuActivity.context.stopService(serviceIntent);
+                Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
+                MenuActivity.context.stopService(serviceIntent);
                 Toast.makeText(MenuActivity.context, "Permission denied to share location, go check permission location!", Toast.LENGTH_SHORT).show();
             }
         }

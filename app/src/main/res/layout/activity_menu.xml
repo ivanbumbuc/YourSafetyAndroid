@@ -16,6 +16,7 @@
             android:backgroundTint="#F8F6F6"
             android:text="Log in"
             android:textColor="#070707"
+            android:textStyle="bold"
             app:cornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,11 +33,36 @@
             android:backgroundTint="#FBF9F9"
             android:text="Create Account"
             android:textColor="#100F0F"
+            android:textStyle="bold"
             app:cornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonLoginMain"
-            app:layout_constraintVertical_bias="0.062" />
+            app:layout_constraintVertical_bias="0.074" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="33dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="236dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="@+id/textView20"
+            app:layout_constraintTop_toTopOf="@+id/textView20"
+            app:srcCompat="@drawable/logo_safety" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="246dp"
+            android:layout_height="69dp"
+            android:layout_marginTop="200dp"
+            android:text="YourSafety"
+            android:textColor="#FFFFFF"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,8 +40,14 @@ public class ScreenReceiver extends BroadcastReceiver {
         counter++;
         if(counter == 5) {
             serviceStart();
-            recorder();
-            fakeCall();
+            String recorderPermission = Information.sharedPreferences.getString(Information.recorder, "");
+            String fakeCallPermission = Information.sharedPreferences.getString(Information.fakeCall, "");
+            System.out.println(recorderPermission + " -------------- recorder");
+            System.out.println(fakeCallPermission+ "---------------- fakeCall");
+            if(recorderPermission.equals("on"))
+                recorder();
+            if(fakeCallPermission.equals("on"))
+                fakeCall();
             return;
         }
         timer.cancel();

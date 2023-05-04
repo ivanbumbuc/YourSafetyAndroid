@@ -46,16 +46,16 @@ public class RecorderActivity extends AppCompatActivity {
         if(Information.sharedPreferences.contains(Information.recorder) && Information.sharedPreferences.getString(Information.recorder,"").equals("on"))
         {
             butonOnOff.setChecked(true);
-            trackingOnOff.setText("Recorder enabled");
+            trackingOnOff.setText("Recording enabled");
             trackingOnOff.setTextColor(Color.GREEN);
-            Toast.makeText(this,"Recorder is enabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Recording is enabled", Toast.LENGTH_SHORT).show();
         }
         else
         {
             butonOnOff.setChecked(false);
-            trackingOnOff.setText("Recorder disabled");
+            trackingOnOff.setText("Recording disabled");
             trackingOnOff.setTextColor(Color.RED);
-            Toast.makeText(this,"Recorder is disabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Recording is disabled", Toast.LENGTH_SHORT).show();
         }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -91,17 +91,17 @@ public class RecorderActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.recorder, "on");
                     editor.commit();
-                    trackingOnOff.setText("Recorder enabled");
+                    trackingOnOff.setText("Recording enabled");
                     trackingOnOff.setTextColor(Color.GREEN);
-                    Toast.makeText(RecorderActivity.this, "Recorder is enabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Recording is enabled", Toast.LENGTH_SHORT).show();
                     Information.recorder2 = Information.sharedPreferences.getString(Information.recorder, "");
                 } else {
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.recorder, "off");
                     editor.commit();
-                    trackingOnOff.setText("Recorder disabled");
+                    trackingOnOff.setText("Recording disabled");
                     trackingOnOff.setTextColor(Color.RED);
-                    Toast.makeText(RecorderActivity.this, "Recorder is disabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Recording is disabled", Toast.LENGTH_SHORT).show();
                     Information.recorder2 = Information.sharedPreferences.getString(Information.recorder, "");
                 }
             } else {
@@ -110,17 +110,17 @@ public class RecorderActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.recorder, "on");
                     editor.commit();
-                    trackingOnOff.setText("Recorder enabled");
+                    trackingOnOff.setText("Recording enabled");
                     trackingOnOff.setTextColor(Color.GREEN);
-                    Toast.makeText(RecorderActivity.this, "Recorder is enabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Recording is enabled", Toast.LENGTH_SHORT).show();
                     Information.recorder2 = Information.sharedPreferences.getString(Information.recorder, "");
                 } else {
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.recorder, "off");
                     editor.commit();
-                    trackingOnOff.setText("Recorder disabled");
+                    trackingOnOff.setText("Recording disabled");
                     trackingOnOff.setTextColor(Color.RED);
-                    Toast.makeText(RecorderActivity.this, "Recorder is disabled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Recording is disabled", Toast.LENGTH_SHORT).show();
                     Information.recorder2 = Information.sharedPreferences.getString(Information.recorder, "");
                 }
             }

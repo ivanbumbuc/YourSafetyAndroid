@@ -28,7 +28,7 @@
         android:layout_marginTop="36dp"
         android:backgroundTint="#FBFBFB"
         android:ems="10"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:textColor="#FAF5F5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Email"
         android:textColor="#FBFAFA"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/inputEmailLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.265"
@@ -55,6 +56,7 @@
         android:layout_marginBottom="8dp"
         android:text="Password"
         android:textColor="#F6F5F5"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/inputPasswordLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.283"
@@ -68,6 +70,7 @@
         android:text="Sign up"
         android:textColor="@color/black"
         android:textColorHighlight="#2E7D32"
+        android:textStyle="bold"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,5 +88,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="121dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="136dp"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/textView18"
+        app:srcCompat="@drawable/logo_safety" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
