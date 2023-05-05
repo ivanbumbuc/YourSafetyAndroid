@@ -48,12 +48,19 @@
 
     <EditText
         android:id="@+id/editTextFakePhoneNumber"
-        android:layout_width="145dp"
-        android:layout_height="42dp"
+        android:layout_width="192dp"
+        android:layout_height="40dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="92dp"
+        android:background="@drawable/input_style"
+        android:drawableStart="@drawable/ic_baseline_local_phone_24"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
         android:ems="10"
+        android:hint="0720999922"
         android:inputType="phone"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 

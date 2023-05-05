@@ -27,11 +27,14 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.location.LocationService;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -79,7 +82,7 @@ public class LimitZoneActivity extends AppCompatActivity {
     private static boolean isOnMap = false;
     private Button showDialogButton;
     private EditText textSearch;
-    private Button searchButton;
+    private ImageButton searchButton;
     private Button clearMarkers;
     private Button stoplimitZone;
 
@@ -217,7 +220,7 @@ public class LimitZoneActivity extends AppCompatActivity {
             }
         });
         textSearch = (EditText)findViewById(R.id.textSearchLocationZone);
-        searchButton = (Button)findViewById(R.id.buttonSearchLimitZone);
+        searchButton = (ImageButton)findViewById(R.id.buttonSearchLimitZone);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -307,7 +310,8 @@ public class LimitZoneActivity extends AppCompatActivity {
                     clearMap = true;
 
                     boolean isMyServiceRunning = isServiceRunning(LocationService.class);
-                    if (!isMyServiceRunning) {
+                    if (!isMyServiceRunning &&  !Information.sharedPreferences.getString(Information.recorder,"").equals("on")) {
+                        System.out.println("intraaaaaaamamammamam aiciciciciicic");
                         Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
                         MenuActivity.context.startService(startServiceIntent);
                     }
@@ -380,11 +384,11 @@ public class LimitZoneActivity extends AppCompatActivity {
                 else
                 {
                     clearMarkers.setEnabled(true);
-                    boolean isMyServiceRunning = isServiceRunning(LocationService.class);
-                    if (isMyServiceRunning) {
-                        Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
-                        MenuActivity.context.stopService(stopServiceIntent);
-                    }
+//                    boolean isMyServiceRunning = isServiceRunning(LocationService.class);
+//                    if (isMyServiceRunning) {
+//                        Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+//                        MenuActivity.context.stopService(stopServiceIntent);
+//                    }
                     boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
                     if (isMyServiceRunningNotificationAlert) {
                         Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);

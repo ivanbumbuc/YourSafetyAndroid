@@ -28,6 +28,7 @@
             android:textStyle="bold"
             mapbox:cornerRadius="40dp"
             mapbox:iconTint="#CA8181"
+            android:elevation="20dp"
             mapbox:rippleColor="#8A2626"
             android:enabled="false"/>
 
@@ -42,26 +43,28 @@
             android:textSize="20sp"
             android:textStyle="bold"
             mapbox:cornerRadius="40dp"
+            android:elevation="20dp"
             android:enabled="false"/>
 
         <EditText
             android:id="@+id/textSearchLocationZone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="41dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/input_style"
             android:ems="10"
+            android:hint="Search"
+            android:paddingStart="15dp"
+            android:elevation="10dp"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_baseline_location_on_24"
             android:inputType="textPersonName"
-            android:text="Search" />
+            android:textColorHint="@android:color/darker_gray" />
 
-        <Button
-            android:id="@+id/buttonSearchLimitZone"
-            android:layout_width="38dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="270dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/ic_baseline_search_24"
-            />
+
+
+
 
         <Button
             android:id="@+id/buttonStopLimitZone"
@@ -69,8 +72,22 @@
             android:layout_height="37dp"
             android:layout_marginStart="335dp"
             android:layout_marginTop="550dp"
+            android:elevation="20dp"
             android:background="@drawable/ic_baseline_stop_circle_24"
             android:enabled="false"/>
+
+
+
+        <ImageButton
+            android:id="@+id/buttonSearchLimitZone"
+            android:layout_width="43dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="270dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/button_style"
+            android:elevation="20dp"
+            mapbox:srcCompat="@drawable/ic_baseline_search_24" />
+
     </com.mapbox.mapboxsdk.maps.MapView>
 
 
