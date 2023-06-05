@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.example.yoursafetyandroid.recorder.RecorderActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +49,13 @@ public class FakeCallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fake_call);
 
+        if(Information.sharedPreferences.getString(Information.limitZone,"").equals("on"))
+        {
+            Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+            // making sure activity stack is cleared before starting landing activity
+           // sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(sessionIntent);
+        }
         trackingOnOff = (TextView)findViewById(R.id.textTrackingFakeCall);
         butonOnOff = findViewById(R.id.switchFakeCall);
         phoneNumber = (EditText) findViewById(R.id.editTextFakePhoneNumber);

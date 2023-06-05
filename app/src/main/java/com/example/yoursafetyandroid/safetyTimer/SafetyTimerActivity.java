@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -58,6 +60,14 @@ public class SafetyTimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_safety_timer);
+
+        if(Information.sharedPreferences.getString(Information.limitZone,"").equals("on"))
+        {
+            Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+            // making sure activity stack is cleared before starting landing activity
+            //sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(sessionIntent);
+        }
 
         if(channel == null) {
             channel = new NotificationChannel("safetyTime", "SafetyTime", NotificationManager.IMPORTANCE_LOW);

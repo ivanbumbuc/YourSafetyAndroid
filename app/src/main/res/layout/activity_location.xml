@@ -25,6 +25,7 @@
         android:layout_marginTop="32dp"
         android:text="Location"
         android:textColor="#000000"
+        android:elevation="15dp"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

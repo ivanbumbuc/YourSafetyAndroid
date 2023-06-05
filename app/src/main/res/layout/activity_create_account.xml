@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33ccff"
+    tools:context=".login.CreateAccountActivity">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="283dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="76dp"
+        android:text="Create account"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/inputEmailSignIn"
+        android:layout_width="323dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/input_style"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/inputPasswordSignIn"
+        android:layout_width="323dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/input_style"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@+id/inputEmailSignIn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/inputEmailSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputEmailSignIn" />
+
+    <EditText
+        android:id="@+id/inputRepeatPasswordSignIn"
+        android:layout_width="323dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_style"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Repeat password"
+        android:inputType="textPassword"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@+id/inputPasswordSignIn"
+        app:layout_constraintHorizontal_bias="0.345"
+        app:layout_constraintStart_toStartOf="@+id/inputPasswordSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputPasswordSignIn" />
+
+    <EditText
+        android:id="@+id/inputNameSignIn"
+        android:layout_width="197dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_style"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="@+id/inputRepeatPasswordSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputRepeatPasswordSignIn" />
+
+    <AutoCompleteTextView
+        android:id="@+id/inputSexSignIn"
+        android:layout_width="104dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_style"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+
+        android:hint="Sex"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@+id/inputRepeatPasswordSignIn"
+        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintStart_toEndOf="@+id/inputNameSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputRepeatPasswordSignIn" />
+
+    <AutoCompleteTextView
+        android:id="@+id/inputCountrySignIn"
+        android:layout_width="197dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/input_style"
+        android:drawablePadding="15dp"
+
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Country"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@+id/inputNameSignIn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/inputNameSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameSignIn" />
+
+    <EditText
+        android:id="@+id/inputZipCodeSignIn"
+        android:layout_width="104dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+
+        android:background="@drawable/input_style"
+        android:drawablePadding="15dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Zip code"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/inputSexSignIn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/inputCountrySignIn"
+        app:layout_constraintTop_toBottomOf="@+id/inputSexSignIn" />
+
+    <Button
+        android:id="@+id/buttonSignIn"
+        android:layout_width="222dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="48dp"
+        android:backgroundTint="#FAFAFA"
+        android:text="Sign in"
+        android:textColor="@color/black"
+        android:textColorHighlight="#2E7D32"
+        android:textStyle="bold"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputCountrySignIn"
+        app:layout_constraintVertical_bias="0.714" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="272dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/textView18"
+        app:srcCompat="@drawable/logo_safety" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

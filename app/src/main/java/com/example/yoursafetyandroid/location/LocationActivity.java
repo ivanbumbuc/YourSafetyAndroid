@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.locationHistory.HistoryLocation;
 import com.example.yoursafetyandroid.locationHistory.HistoryLocationService;
 import com.example.yoursafetyandroid.menu.MenuActivity;
@@ -38,6 +39,13 @@ public class LocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        if(Information.sharedPreferences.getString(Information.limitZone,"").equals("on"))
+        {
+            Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+            // making sure activity stack is cleared before starting landing activity
+            //sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(sessionIntent);
+        }
         buttonOnOffLocation = findViewById(R.id.switchLocation);
         buttonOnOffHistory = findViewById(R.id.switchHistory);
         setButtonsEnable();

@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -96,6 +97,7 @@ public class LimitZoneActivity extends AppCompatActivity {
     private static boolean isParent = false;
     private static boolean isChild = false;
     private static String child = null;
+    private static boolean CHILD_MOD= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +269,7 @@ public class LimitZoneActivity extends AppCompatActivity {
                 isChildForParent();
                 if(isChild)
                 {
+                    CHILD_MOD = true;
                     if(map != null) {
                         map.clear();
                         removeCircle(map);
@@ -308,23 +311,38 @@ public class LimitZoneActivity extends AppCompatActivity {
                     stoplimitZone.setEnabled(false);
                     isOnMap = true;
                     clearMap = true;
-
                     boolean isMyServiceRunning = isServiceRunning(LocationService.class);
-                    if (!isMyServiceRunning &&  !Information.sharedPreferences.getString(Information.recorder,"").equals("on")) {
-                        System.out.println("intraaaaaaamamammamam aiciciciciicic");
-                        Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
-                        MenuActivity.context.startService(startServiceIntent);
-                    }
+                        if (!isMyServiceRunning && !Information.sharedPreferences.getString(Information.shareLocation, "").equals("on")) {
+                            Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+                            MenuActivity.context.startService(startServiceIntent);
+                        }
 
-                    boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
-                    if (!isMyServiceRunningNotificationAlert) {
-                        Intent startServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
-                        MenuActivity.context.startService(startServiceIntent);
-                    }
-//                    Intent serviceIntent = new Intent(MenuActivity.context, LocationService.class);
-//                    MenuActivity.context.stopService(serviceIntent);
-//                    MenuActivity.context.startService(serviceIntent);
-
+                        boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
+                        if (!isMyServiceRunningNotificationAlert) {
+                            Intent startServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+                            MenuActivity.context.startService(startServiceIntent);
+                        }
+                        isChildForParent();
+                        if(!isChild)
+                        {
+                            stoplimitZone.setEnabled(false);
+                            map.clear();
+                            isOnMap = false;
+                            removeCircle(map);
+                            if(!Information.sharedPreferences.getString(Information.shareLocation,"").equals("on")) {
+                                boolean isMyServiceRunning2 = isServiceRunning(LocationService.class);
+                                if (isMyServiceRunning2) {
+                                    Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+                                    MenuActivity.context.stopService(stopServiceIntent);
+                                }
+                            }
+                            boolean isMyServiceRunningNotificationAlert2 = isServiceRunning(LimitZoneService.class);
+                            if (isMyServiceRunningNotificationAlert2) {
+                                Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+                                MenuActivity.context.stopService(stopServiceIntent);
+                            }
+                            reloadActivity();
+                        }
                 }
                 else if(isParent)
                 {
@@ -384,15 +402,32 @@ public class LimitZoneActivity extends AppCompatActivity {
                 else
                 {
                     clearMarkers.setEnabled(true);
-//                    boolean isMyServiceRunning = isServiceRunning(LocationService.class);
-//                    if (isMyServiceRunning) {
-//                        Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
-//                        MenuActivity.context.stopService(stopServiceIntent);
-//                    }
+                    if(!Information.sharedPreferences.getString(Information.shareLocation,"").equals("on")) {
+                    boolean isMyServiceRunning = isServiceRunning(LocationService.class);
+                    if (isMyServiceRunning) {
+                        Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+                        MenuActivity.context.stopService(stopServiceIntent);
+                    }
+                    }
                     boolean isMyServiceRunningNotificationAlert = isServiceRunning(LimitZoneService.class);
                     if (isMyServiceRunningNotificationAlert) {
                         Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
                         MenuActivity.context.stopService(stopServiceIntent);
+                    }
+
+                    if(CHILD_MOD) {
+                        SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                        editor.putString(Information.limitZone, "off");
+                        editor.commit();
+                        editor.apply();
+                        CHILD_MOD = false;
+                        stoplimitZone.setEnabled(false);
+                        if(map!=null) {
+                            map.clear();
+                            removeCircle(map);
+                        }
+                        isOnMap = false;
+                        reloadActivity();
                     }
                 }
                 handlerChild.postDelayed(this, 2000); // 2000 milliseconds = 2 seconds
@@ -417,18 +452,17 @@ public class LimitZoneActivity extends AppCompatActivity {
                 }
             }
         });
-        System.out.println(isParent);
     }
 
     private void isChildForParent()
     {
-        AtomicBoolean ok = new AtomicBoolean(false);
-        DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(Information.sharedPreferences.getString(Information.userUIDPreference,"")));
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                if (document.exists() && Integer.parseInt(document.getData().get("type").toString()) != LimitType.NONE) {
+                if (document.exists()) {
                     isChild = Integer.parseInt(document.getData().get("type").toString()) == LimitType.CHILD;
+                    System.out.println(isParent + "--------------+++++++++++");
                 }
             }
         });
@@ -495,7 +529,8 @@ public class LimitZoneActivity extends AppCompatActivity {
     {
         super.onStop();
         mapView.onStop();
-        map.clear();
+        if(map!=null)
+            map.clear();
     }
 
     @Override

@@ -20,6 +20,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Switch
+                android:id="@+id/switchSOS"
+                android:layout_width="68dp"
+                android:layout_height="41dp"
+                android:elevation="20dp"
+                android:showText="true"
+                android:textOff="Off"
+                android:textOn="On"
+                android:thumb="@drawable/on_sos"
+
+                android:track="@drawable/off_sos"
+                app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintHorizontal_bias="0.945"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintVertical_bias="0.645" />
 
             <ImageView
                 android:id="@+id/imageViewSafetyTimerButton"
@@ -34,49 +51,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="191dp"
-                android:layout_height="122dp"
-                android:src="@drawable/timersafety"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewSafetyTimerButton"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewSafetyTimerButton"
-                app:layout_constraintHorizontal_bias="0.693"
-                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton"
-                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton" />
-
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="61dp"
-                android:layout_height="72dp"
-                android:layout_marginTop="16dp"
-                android:text="Safety Timer"
+                android:layout_width="116dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="SOS"
                 android:textColor="#040404"
-                android:textSize="20sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="0.258"
+                app:layout_constraintBottom_toTopOf="@+id/textView3"
                 app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton"
                 app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="110dp"
-                android:layout_height="63dp"
-                android:text="Timer for safety, it is set and if it is not stopped at the end of it, emergency messages are sent."
+                android:layout_width="177dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:text="When this service is activated, it will send emergency messages to the people added in the settings."
                 android:textColor="#FFFFFF"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton" />
+                app:layout_constraintStart_toStartOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/limitZone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="179dp"
+                android:layout_height="208dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/zonelimit"
@@ -85,8 +91,8 @@
 
             <ImageView
                 android:id="@+id/locationImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="179dp"
+                android:layout_height="208dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/zonelimit"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,9 +103,9 @@
 
             <ImageView
                 android:id="@+id/RecordingView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_width="179dp"
+                android:layout_height="208dp"
+                android:layout_marginTop="48dp"
                 android:src="@drawable/zonelimit"
                 app:layout_constraintEnd_toStartOf="@+id/locationImageView"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -108,8 +114,8 @@
 
             <ImageView
                 android:id="@+id/FakeCallView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="179dp"
+                android:layout_height="208dp"
                 android:layout_marginTop="24dp"
                 android:src="@drawable/zonelimit"
                 app:layout_constraintBottom_toTopOf="@+id/imageViewButton"
@@ -119,18 +125,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/locationImageView"
                 app:layout_constraintVertical_bias="0.0" />
 
-
             <ImageView
                 android:id="@+id/imageViewButton"
                 android:layout_width="369dp"
                 android:layout_height="186dp"
-                android:layout_marginTop="624dp"
+                android:layout_marginTop="680dp"
                 android:outlineAmbientShadowColor="#735656"
                 android:outlineSpotShadowColor="#613B3B"
 
                 android:src="@drawable/timebackground"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.833"
+                app:layout_constraintHorizontal_bias="0.761"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,11 +143,11 @@
                 android:id="@+id/imageView6"
                 android:layout_width="120dp"
                 android:layout_height="76dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
                 android:src="@drawable/zonelimitilustration"
                 app:layout_constraintBottom_toBottomOf="@+id/limitZone"
                 app:layout_constraintEnd_toEndOf="@+id/limitZone"
-                app:layout_constraintHorizontal_bias="0.555"
+                app:layout_constraintHorizontal_bias="0.474"
                 app:layout_constraintStart_toStartOf="@+id/limitZone" />
 
             <TextView
@@ -155,10 +160,10 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/imageView6"
                 app:layout_constraintEnd_toEndOf="@+id/limitZone"
-                app:layout_constraintHorizontal_bias="0.515"
+                app:layout_constraintHorizontal_bias="0.348"
                 app:layout_constraintStart_toStartOf="@+id/limitZone"
                 app:layout_constraintTop_toTopOf="@+id/limitZone"
-                app:layout_constraintVertical_bias="0.372" />
+                app:layout_constraintVertical_bias="0.24" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -176,8 +181,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="96dp"
-                android:layout_height="76dp"
+                android:layout_width="122dp"
+                android:layout_height="94dp"
                 android:layout_marginTop="40dp"
                 android:src="@drawable/undraw_my_current_location_re_whmt"
                 app:layout_constraintEnd_toEndOf="@+id/locationImageView"
@@ -237,14 +242,63 @@
 
             <ImageView
                 android:id="@+id/imageView10"
-                android:layout_width="104dp"
-                android:layout_height="81dp"
+                android:layout_width="132dp"
+                android:layout_height="101dp"
                 android:layout_marginTop="32dp"
                 android:src="@drawable/undraw_night_calls__5_jh7"
                 app:layout_constraintEnd_toEndOf="@+id/FakeCallView"
                 app:layout_constraintHorizontal_bias="0.428"
                 app:layout_constraintStart_toStartOf="@+id/FakeCallView"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="82dp"
+                android:layout_height="57dp"
+                android:text="Safety Timer"
+                android:textColor="#0E0A0A"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView21"
+                app:layout_constraintEnd_toStartOf="@+id/imageView21"
+                app:layout_constraintHorizontal_bias="0.135"
+                app:layout_constraintStart_toStartOf="@+id/textView24"
+                app:layout_constraintTop_toTopOf="@+id/imageViewButton"
+                app:layout_constraintVertical_bias="0.181" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="115dp"
+                android:layout_height="61dp"
+                android:text="Timer for safety, it is set and if it is not stopped at the end of it, emergency messages are sent."
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewButton"
+                app:layout_constraintEnd_toStartOf="@+id/imageView21"
+                app:layout_constraintHorizontal_bias="0.733"
+                app:layout_constraintStart_toStartOf="@+id/imageViewButton"
+                app:layout_constraintTop_toBottomOf="@+id/textView21"
+                app:layout_constraintVertical_bias="0.382" />
+
+            <ImageView
+                android:id="@+id/imageView21"
+                android:layout_width="187dp"
+                android:layout_height="129dp"
+                android:layout_marginEnd="52dp"
+                android:src="@drawable/timersafety"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewButton"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewButton"
+                app:layout_constraintTop_toTopOf="@+id/imageViewButton"
+                app:layout_constraintVertical_bias="0.666" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="123dp"
+                android:layout_height="79dp"
+                android:layout_marginTop="72dp"
+                android:src="@drawable/undraw_notify_re_65on__1_"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

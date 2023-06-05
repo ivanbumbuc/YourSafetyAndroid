@@ -28,6 +28,13 @@
         android:theme="@style/Theme.YourSafetyAndroid"
         tools:targetApi="31">
         <activity
+            android:name=".login.CreateAccountActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".fakeCall.FakeCallActivity"
             android:exported="false">
             <meta-data
@@ -104,7 +111,6 @@
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
-
         <service
             android:name=".locationHistory.HistoryLocationService"
             android:enabled="true"

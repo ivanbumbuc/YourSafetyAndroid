@@ -1,66 +1,216 @@
 package com.example.yoursafetyandroid.menu;
 
+import android.app.ActivityManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneService;
+import com.example.yoursafetyandroid.location.LocationService;
+import com.example.yoursafetyandroid.location.TimeLocation;
+import com.example.yoursafetyandroid.locationHistory.HistoryLocation;
+import com.example.yoursafetyandroid.locationHistory.HistoryLocationService;
+import com.example.yoursafetyandroid.login.LoginActivity;
+import com.example.yoursafetyandroid.main.MainActivity;
+import com.example.yoursafetyandroid.pushNotification.NotificationService;
+import com.example.yoursafetyandroid.safetyTimer.TimerService;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+
 public class SettingsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    private EditText email;
+    private EditText name;
+    private EditText phone;
+    private AutoCompleteTextView sex;
+    private AutoCompleteTextView country;
+    private TextView zipCode;
+    private EditText uid;
+    private FirebaseAuth auth;
+    private Button applyChanges;
+    private Button logOut;
+    private TextView nameTitle;
+    private FirebaseFirestore db;
+    private ImageButton copy;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        email = rootView.findViewById(R.id.inputEmailSettings);
+        name = rootView.findViewById(R.id.inputNameSettings);
+        phone = rootView.findViewById(R.id.editPhoneSettings);
+        sex = rootView.findViewById(R.id.inputSexSettings);
+        country = rootView.findViewById(R.id.inputCountrySettings);
+        zipCode = rootView.findViewById(R.id.inputZipCodeSettings);
+        applyChanges = rootView.findViewById(R.id.changeSettings);
+        logOut = rootView.findViewById(R.id.logOut);
+        uid = rootView.findViewById(R.id.inputUidSettings);
+        nameTitle = rootView.findViewById(R.id.textViewSettingsName);
+        db = FirebaseFirestore.getInstance();
+        applyChanges = rootView.findViewById(R.id.changeSettings);
+        logOut = rootView.findViewById(R.id.logOut);
+        copy = rootView.findViewById(R.id.copySettingsGuid);
+        init();
+
+        applyChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setApplyChanges();
+            }
+        });
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLogOut();
+            }
+        });
+
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("UID", Information.sharedPreferences.getString(Information.userUIDPreference, ""));
+                clipboard.setPrimaryClip(clip);
+            }
+        });
+
+        return rootView;
     }
+
+    private void init()
+    {
+        email.setText(Information.sharedPreferences.getString(Information.emailPreference, ""));
+        name.setText(Information.sharedPreferences.getString(Information.userNamePreference, ""));
+        phone.setText(Information.sharedPreferences.getString(Information.phoneNumberPreference, ""));
+        zipCode.setText(Information.sharedPreferences.getString(Information.zipCodePreference, ""));
+        country.setText(Information.sharedPreferences.getString(Information.countryPreference, ""));
+        sex.setText(Information.sharedPreferences.getString(Information.sexPreference, ""));
+        uid.setText(Information.sharedPreferences.getString(Information.userUIDPreference, ""));
+        nameTitle.setText("Welcome back, "+Information.sharedPreferences.getString(Information.userNamePreference, "")+"!");
+    }
+
+    private void setApplyChanges()
+    {
+        SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+        editor.putString(Information.userNamePreference,name.getText().toString());
+        editor.putString(Information.sexPreference,sex.getText().toString());
+        editor.putString(Information.phoneNumberPreference, phone.getText().toString());
+        editor.putString(Information.zipCodePreference, zipCode.getText().toString());
+        editor.putString(Information.countryPreference, country.getText().toString());
+        editor.apply();
+
+        Map<String,Object> z = new HashMap<>();
+        Map<String,String> info = new HashMap<>();
+        info.put("phone",phone.getText().toString());
+        info.put("name",name.getText().toString());
+        info.put("country",country.getText().toString());
+        info.put("sex",sex.getText().toString());
+        info.put("zipCode",zipCode.getText().toString());
+        z.put("accountInformation", info);
+
+        db.collection("liveLocation").document(Information.sharedPreferences.getString(Information.userUIDPreference, "")).update(z).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(MenuActivity.context, "Information has been saved!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MenuActivity.context, "Error save information!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setLogOut()
+    {
+        SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        Intent sessionIntent = new Intent(MenuActivity.context, MainActivity.class);
+        sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(sessionIntent);
+        stopServiceClass();
+        Toast.makeText(MenuActivity.context, "Log out successful!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void stopServiceClass()
+    {
+        boolean locationService = isServiceRunning(LocationService.class);
+        if (locationService) {
+            Intent stopServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+            MenuActivity.context.stopService(stopServiceIntent);
+        }
+
+        boolean limitZoneService = isServiceRunning(LimitZoneService.class);
+        if (limitZoneService) {
+            Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
+            MenuActivity.context.stopService(stopServiceIntent);
+        }
+
+        boolean historyLocation = isServiceRunning(HistoryLocationService.class);
+        if(historyLocation)
+        {
+            Intent stopServiceIntent = new Intent(MenuActivity.context, HistoryLocationService.class);
+            MenuActivity.context.stopService(stopServiceIntent);
+        }
+
+        boolean notificationService = isServiceRunning(NotificationService.class);
+        if(notificationService)
+        {
+            Intent stopServiceIntent = new Intent(MenuActivity.context, NotificationService.class);
+            MenuActivity.context.stopService(stopServiceIntent);
+        }
+
+        boolean timerService = isServiceRunning(TimerService.class);
+        if(timerService)
+        {
+            Intent stopServiceIntent = new Intent(MenuActivity.context, TimerService.class);
+            MenuActivity.context.stopService(stopServiceIntent);
+        }
+
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        if (getActivity() != null) {
+            ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

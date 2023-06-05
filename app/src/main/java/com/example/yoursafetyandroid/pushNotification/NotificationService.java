@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,6 +77,13 @@ public class NotificationService extends Service {
                     {
                         String message = document.getData().get("message").toString();
                         showNotification("Zone Limit",message);
+                        Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+                        sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(sessionIntent);
+                        SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                        editor.putString(Information.limitZone, "on");
+                        editor.commit();
+                        editor.apply();
                     }
                     else if(Integer.parseInt(document.getData().get("typeMessage").toString()) == NotificationType.ALERT_ZONE_LIMIT)
                     {

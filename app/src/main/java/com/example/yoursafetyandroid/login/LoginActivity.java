@@ -19,7 +19,14 @@ import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.example.yoursafetyandroid.pushNotification.NotificationService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -34,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Information.sharedPreferences = getSharedPreferences(Information.yourSafetyLogin, Context.MODE_PRIVATE);
         addButtonFunctionality();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -41,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void addButtonFunctionality() {
-        ImageView backBtn = findViewById(R.id.buttonBackLogin);
         Button loginBtn = findViewById(R.id.buttonConnectLogin);
 
         progres = new ProgressDialog(this);
@@ -60,6 +67,22 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(Information.emailPreference, email.getText().toString());
                         editor.putString(Information.passwordPreference, password.getText().toString());
                         editor.putString(Information.userUIDPreference, Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        DocumentReference docRef = db.collection("liveLocation").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        docRef.get().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                DocumentSnapshot document = task2.getResult();
+                                if (document.exists()) {
+                                    Map<String, String> x = (Map<String, String>)document.getData().get("accountInformation");
+                                    editor.putString(Information.userNamePreference,x.get("name"));
+                                    editor.putString(Information.sexPreference,x.get("sex"));
+                                    editor.putString(Information.phoneNumberPreference, x.get("phone"));
+                                    editor.putString(Information.zipCodePreference, x.get("zipCode"));
+                                    editor.putString(Information.countryPreference, x.get("country"));
+                                    editor.apply();
+                                }
+                            }
+                        });
                         editor.apply();
                         progres.dismiss();
                         logat();

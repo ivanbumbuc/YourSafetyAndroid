@@ -20,6 +20,7 @@ import android.view.MenuItem;
 
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.pushNotification.NotificationService;
 import com.example.yoursafetyandroid.services.ScreenService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +39,15 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Information.sharedPreferences = getSharedPreferences(Information.yourSafetyLogin, Context.MODE_PRIVATE);
+
+        if(Information.sharedPreferences.getString(Information.limitZone,"").equals("on"))
+        {
+            Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+            // making sure activity stack is cleared before starting landing activity
+            //sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(sessionIntent);
+        }
         HomeFragment homeFragment = new HomeFragment();
         LocationFragment locationFragment = new LocationFragment();
         HistoryFragment historyFragment = new HistoryFragment();

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.services.ScreenReceiver;
 
 public class RecorderActivity extends AppCompatActivity {
@@ -31,6 +33,13 @@ public class RecorderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recorder);
+        if(Information.sharedPreferences.getString(Information.limitZone,"").equals("on"))
+        {
+            Intent sessionIntent =new Intent(this, LimitZoneActivity.class);
+            // making sure activity stack is cleared before starting landing activity
+            //sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(sessionIntent);
+        }
 
         butonOnOff = findViewById(R.id.switchRecorder);
 

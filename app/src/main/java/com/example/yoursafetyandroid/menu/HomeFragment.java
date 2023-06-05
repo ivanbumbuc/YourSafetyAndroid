@@ -1,21 +1,36 @@
 package com.example.yoursafetyandroid.menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.yoursafetyandroid.R;
+import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.fakeCall.FakeCallActivity;
 import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.location.LocationActivity;
+import com.example.yoursafetyandroid.location.LocationService;
 import com.example.yoursafetyandroid.recorder.RecorderActivity;
 import com.example.yoursafetyandroid.safetyTimer.SafetyTimerActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -25,6 +40,8 @@ public class HomeFragment extends Fragment {
     private ImageView location;
     private ImageView recording;
     private ImageView fakeCall;
+    private ImageView sos;
+    private Switch sosButtonActivated;
     public HomeFragment() {
 
     }
@@ -40,11 +57,21 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        safetyTimer = (ImageView) rootView.findViewById(R.id.imageViewSafetyTimerButton);
+        sos = (ImageView) rootView.findViewById(R.id.imageViewSafetyTimerButton);
         limitZone = (ImageView) rootView.findViewById(R.id.limitZone);
         location = (ImageView) rootView.findViewById(R.id.locationImageView);
         recording = (ImageView) rootView.findViewById(R.id.RecordingView);
         fakeCall = (ImageView) rootView.findViewById(R.id.FakeCallView);
+        safetyTimer = (ImageView) rootView.findViewById(R.id.imageViewButton);
+        sosButtonActivated = rootView.findViewById(R.id.switchSOS);
+        if(Information.sharedPreferences.getString(Information.SOS,"").equals("on"))
+        {
+            sosButtonActivated.setChecked(true);
+        }
+        else
+        {
+            sosButtonActivated.setChecked(false);
+        }
         buttonsActions();
         return rootView;
     }
@@ -90,6 +117,24 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Intent fakeCall = new Intent(getActivity(), FakeCallActivity.class);
                 startActivity(fakeCall);
+            }
+        });
+
+        sosButtonActivated.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                    editor.putString(Information.SOS, "on");
+                    editor.apply();
+                }
+                else
+                {
+                    SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                    editor.putString(Information.SOS, "off");
+                    editor.apply();
+                }
             }
         });
        
