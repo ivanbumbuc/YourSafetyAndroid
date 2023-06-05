@@ -14,8 +14,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -28,15 +30,21 @@ import android.widget.Toast;
 import com.example.yoursafetyandroid.R;
 import com.example.yoursafetyandroid.account.Information;
 import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
+import com.example.yoursafetyandroid.location.LocationService;
+import com.example.yoursafetyandroid.menu.MenuActivity;
+import com.example.yoursafetyandroid.sms.SmsService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SafetyTimerActivity extends AppCompatActivity {
 
@@ -90,22 +98,52 @@ public class SafetyTimerActivity extends AppCompatActivity {
 
             if(millisUntilFinished == 0) {
                 stopCountDown();
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("contacts").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                docRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists() && document.getData().get("smsContacts") != null) {
-                            for (String numar :(ArrayList<String>) Objects.requireNonNull(document.getData().get("smsContacts"))) {
-                                SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(numar, null, "Safety Time! I need HELP.", null, null);
+                if(!Information.sharedPreferences.getString(Information.shareLocation,"").equals("on")) {
+                    Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
+                    MenuActivity.context.startService(startServiceIntent);
+                    SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                    editor.putString(Information.shareLocation, "on");
+                    editor.commit();
+                    editor.apply();
+                }
+                Toast.makeText(context, "Safety Timer stopped, SOS has been activated!", Toast.LENGTH_LONG).show();
+                // Create a handler
+                Handler handler = new Handler();
+                // Run code after delay
+                handler.postDelayed(() -> {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference docRef = db.collection("locationsPersons").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    docRef.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists() && document.getData().get("persons") != null) {
+                                List<String> numbers = new ArrayList<>(); // Please add this line if you didn't declare 'numbers' elsewhere
+                                List<String> x = (ArrayList<String>)document.getData().get("persons");
+                                final AtomicInteger counter = new AtomicInteger(x.size());
+                                for(String z: x)
+                                {
+                                    DocumentReference doc = db.collection("liveLocation").document(z);
+                                    doc.get().addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful()) {
+                                            DocumentSnapshot document2 = task2.getResult();
+                                            if (document2.exists() && document2.getData().get("accountInformation") != null) {
+                                                Map<String, String> person = (Map<String, String>) document2.getData().get("accountInformation");
+                                                numbers.add(person.get("phone"));
+                                            }
+                                        } else {
+                                            Log.d("getContact", "get failed with ", task.getException());
+                                        }
+                                        if (counter.decrementAndGet() == 0) {
+                                            SmsService.sendSMSSafetyTimer(numbers);
+                                        }
+                                    });
+                                }
                             }
+                        } else {
+                            Log.d("getContact", "get failed with ", task.getException());
                         }
-                    } else {
-                        Log.d("getContact", "get failed with ", task.getException());
-                    }
-                });
+                    });
+                }, 5000);  // Delay of 5 seconds
             }
         }
     };

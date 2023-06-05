@@ -1,10 +1,14 @@
 package com.example.yoursafetyandroid.menu;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -42,6 +46,7 @@ public class HomeFragment extends Fragment {
     private ImageView fakeCall;
     private ImageView sos;
     private Switch sosButtonActivated;
+    private static final int PERMISSION_SEND_SMS = 123;
     public HomeFragment() {
 
     }
@@ -128,6 +133,7 @@ public class HomeFragment extends Fragment {
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.SOS, "on");
                     editor.apply();
+                    requestSmsPermission();
                 }
                 else
                 {
@@ -139,5 +145,20 @@ public class HomeFragment extends Fragment {
         });
        
     }
+
+    private void requestSmsPermission() {
+
+        // check permission is given
+        if (ContextCompat.checkSelfPermission(MenuActivity.context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            // request permission (see result in onRequestPermissionsResult() method)
+            ActivityCompat.requestPermissions(MenuActivity.activity,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    PERMISSION_SEND_SMS);
+        }
+    }
+
+
+
+
 
 }

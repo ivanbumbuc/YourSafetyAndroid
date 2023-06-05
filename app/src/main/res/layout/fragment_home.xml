@@ -47,7 +47,7 @@
                 android:outlineSpotShadowColor="#613B3B"
                 android:src="@drawable/timebackground"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.82"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,11 +79,12 @@
                 app:layout_constraintTop_toTopOf="@+id/imageViewSafetyTimerButton"
                 app:layout_constraintVertical_bias="1.0" />
 
+
             <ImageView
                 android:id="@+id/limitZone"
                 android:layout_width="179dp"
                 android:layout_height="208dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/zonelimit"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,10 +97,9 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/zonelimit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.699"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/limitZone"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewSafetyTimerButton" />
-
 
             <ImageView
                 android:id="@+id/RecordingView"
@@ -135,7 +135,7 @@
 
                 android:src="@drawable/timebackground"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.761"
+                app:layout_constraintHorizontal_bias="0.952"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

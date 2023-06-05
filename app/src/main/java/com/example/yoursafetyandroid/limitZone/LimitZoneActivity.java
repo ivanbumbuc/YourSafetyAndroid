@@ -215,6 +215,11 @@ public class LimitZoneActivity extends AppCompatActivity {
                             Intent stopServiceIntent = new Intent(MenuActivity.context, LimitZoneService.class);
                             MenuActivity.context.stopService(stopServiceIntent);
                         }
+
+                        SharedPreferences.Editor editor = Information.sharedPreferences.edit();
+                        editor.putString(Information.limitZone, "off");
+                        editor.commit();
+                        editor.apply();
                     }
 
                 });
@@ -456,7 +461,7 @@ public class LimitZoneActivity extends AppCompatActivity {
 
     private void isChildForParent()
     {
-        DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(Information.sharedPreferences.getString(Information.userUIDPreference,"")));
+        DocumentReference docRef = db.collection("limitZone").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -529,8 +534,7 @@ public class LimitZoneActivity extends AppCompatActivity {
     {
         super.onStop();
         mapView.onStop();
-        if(map!=null)
-            map.clear();
+        map.clear();
     }
 
     @Override
@@ -720,6 +724,7 @@ public class LimitZoneActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        handlerChild.removeCallbacks(runnableChild);
     }
 
 

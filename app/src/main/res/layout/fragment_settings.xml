@@ -43,6 +43,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView18" />
 
+            <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="386dp"
+                android:layout_height="240dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/shadow"
+                app:layout_constraintEnd_toEndOf="@+id/imageView19"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/imageView19"
+                app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
             <TextView
                 android:id="@+id/textView23"
                 android:layout_width="128dp"
@@ -239,38 +250,101 @@
                 app:layout_constraintStart_toEndOf="@+id/inputUidSettings"
                 app:layout_constraintTop_toTopOf="@+id/inputUidSettings" />
 
+            <EditText
+                android:id="@+id/inputPersons"
+                android:layout_width="272dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="52dp"
+                android:background="@drawable/input_style"
+                android:drawablePadding="15dp"
+                android:elevation="10dp"
+                android:ems="10"
+                android:hint="Person uid"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/inputCountrySettings"
+                app:layout_constraintTop_toTopOf="@+id/imageView20" />
+
+            <ImageView
+                android:id="@+id/addPersons"
+                android:layout_width="50dp"
+                android:layout_height="39dp"
+                app:layout_constraintBottom_toBottomOf="@+id/inputPersons"
+                app:layout_constraintEnd_toEndOf="@+id/listPersons"
+                app:layout_constraintTop_toTopOf="@+id/inputPersons"
+                app:layout_constraintVertical_bias="0.666"
+                app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+
+            <ListView
+                android:id="@+id/listPersons"
+                android:layout_width="346dp"
+                android:layout_height="106dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputPersons"
+                app:layout_constraintVertical_bias="0.413" />
+
             <Button
                 android:id="@+id/logOut"
                 android:layout_width="161dp"
                 android:layout_height="52dp"
-                android:layout_marginTop="64dp"
-                android:backgroundTint="#C62828"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#F50000"
                 android:text="Logout"
                 android:textColor="@color/white"
-                android:textColorHighlight="#2E7D32"
+                android:textColorHighlight="#F50000"
                 android:textStyle="bold"
                 app:cornerRadius="15dp"
-                app:layout_constraintEnd_toEndOf="@+id/inputCountrySettings"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="@+id/listPersons"
+                app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="@+id/inputCountrySettings"
-                app:layout_constraintTop_toBottomOf="@+id/inputCountrySettings" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView20" />
 
             <Button
                 android:id="@+id/changeSettings"
                 android:layout_width="165dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="36dp"
-                android:layout_marginTop="64dp"
-                android:backgroundTint="#2E7D32"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#35F33E"
                 android:text="Apply changes"
                 android:textColor="@color/white"
-                android:textColorHighlight="#2E7D32"
+                android:textColorHighlight="#35F33E"
                 android:textStyle="bold"
                 app:cornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="@+id/inputZipCodeSettings"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/logOut"
-                app:layout_constraintTop_toBottomOf="@+id/inputZipCodeSettings" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView20" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="@+id/changeSettings"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="@+id/logOut"
+                app:layout_constraintTop_toBottomOf="@+id/logOut" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Add persons"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/inputPersons"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/inputPersons"
+                app:layout_constraintTop_toTopOf="@+id/imageView20" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

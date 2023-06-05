@@ -26,7 +26,6 @@ tools:context=".menu.HistoryFragment">
         android:id="@+id/dateHistory"
         android:layout_width="162dp"
         android:layout_height="40dp"
-        android:layout_marginStart="212dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="34dp"
         android:background="@drawable/input_style"
@@ -44,7 +43,7 @@ tools:context=".menu.HistoryFragment">
         mapbox:layout_constraintBottom_toTopOf="@+id/mapViewHistory"
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintHorizontal_bias="0.0"
-        mapbox:layout_constraintStart_toStartOf="@+id/historyView"
+        mapbox:layout_constraintStart_toEndOf="@+id/historyView"
         mapbox:layout_constraintTop_toTopOf="parent"
         mapbox:layout_constraintVertical_bias="1.0" />
 
