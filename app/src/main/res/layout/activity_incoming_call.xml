@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#656363"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/incoming_call" />
+
+    <TextView
+        android:id="@+id/tv_caller_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="John Doe"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <ImageButton
+        android:id="@+id/imageButtoncall1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_caller_name"
+        android:layout_alignStart="@+id/tv_caller_name"
+        android:layout_alignBottom="@+id/tv_caller_name"
+        android:layout_marginStart="-105dp"
+        android:layout_marginTop="322dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="-368dp"
+        android:layout_toStartOf="@+id/tv_caller_name"
+        android:background="@drawable/style_button_call"
+        android:elevation="20dp"
+        app:srcCompat="@drawable/ic_baseline_call_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtoncall2"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/tv_caller_name"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="321dp"
+        android:layout_toEndOf="@+id/tv_caller_name"
+        android:background="@drawable/style_call_end"
+        android:elevation="20dp"
+        app:srcCompat="@drawable/ic_baseline_call_end_24" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="136dp"
+        android:layout_height="31dp"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="-55dp"
+        android:layout_marginEnd="-17dp"
+        android:text="Incoming call..."
+        android:textColor="#FFFEFE"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

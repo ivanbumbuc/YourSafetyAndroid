@@ -9,12 +9,12 @@ tools:context=".menu.HistoryFragment">
 
     <TextView
         android:id="@+id/historyView"
-        android:layout_width="192dp"
-        android:layout_height="69dp"
+        android:layout_width="189dp"
+        android:layout_height="77dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-black"
-        android:text="History of Locations"
+        android:text="Location history"
         android:textColor="#050505"
         android:textSize="30dp"
         mapbox:layout_constraintEnd_toEndOf="parent"

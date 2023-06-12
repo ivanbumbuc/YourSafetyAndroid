@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#98C2F3"
+    tools:context=".fakeCall.AcceptCallActivity">
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="102dp"
+        android:layout_height="101dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/incoming_call" />
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView24"
+        app:layout_constraintEnd_toEndOf="@+id/imageView22"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="@+id/imageView22"
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:layout_constraintVertical_bias="0.372" />
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="63dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView22"
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:srcCompat="@drawable/ic_baseline_mic_off_24" />
+
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="70dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="108dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView23"
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:srcCompat="@drawable/ic_baseline_dialpad_24" />
+
+    <ImageView
+        android:id="@+id/imageView26"
+        android:layout_width="54dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView24"
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
+        app:srcCompat="@drawable/ic_baseline_volume_up_24" />
+
+    <ImageView
+        android:id="@+id/imageView27"
+        android:layout_width="58dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="68dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView24"
+        app:layout_constraintTop_toBottomOf="@+id/imageView23"
+        app:srcCompat="@drawable/ic_baseline_add_ic_call_24" />
+
+    <ImageView
+        android:id="@+id/imageView28"
+        android:layout_width="69dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView26"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toEndOf="@+id/imageView27"
+        app:layout_constraintTop_toBottomOf="@+id/imageView24"
+        app:srcCompat="@drawable/ic_baseline_pause_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonAcceptCall_end"
+        android:layout_width="54dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="148dp"
+        android:background="@drawable/style_call_end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_baseline_call_end_24" />
+
+    <TextView
+        android:id="@+id/textViewAccepCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="0720869802"
+        android:textColor="#0C0C0C"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageView22"
+        app:layout_constraintEnd_toEndOf="@+id/imageView22"
+        app:layout_constraintStart_toStartOf="@+id/imageView22" />
+</androidx.constraintlayout.widget.ConstraintLayout>

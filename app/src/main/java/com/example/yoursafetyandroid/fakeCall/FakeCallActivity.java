@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -87,46 +88,51 @@ public class FakeCallActivity extends AppCompatActivity {
 
 
         butonOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (ActivityCompat.checkSelfPermission(FakeCallActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            if (Settings.canDrawOverlays(this)) {
                 if (b) {
                     updateDataBaseFakeCall(true);
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.fakeCall, "on");
                     editor.commit();
+                    editor.apply();
                     trackingOnOff.setText("Fake Call enabled");
                     trackingOnOff.setTextColor(Color.GREEN);
                     Toast.makeText(FakeCallActivity.this, "Fake Call is enabled", Toast.LENGTH_SHORT).show();
-                    Information.fakeCallValue = Information.sharedPreferences.getString(Information.fakeCall, "");
+                    Information.fakeCallValue = phoneNumber.getText().toString();
                 } else {
                     updateDataBaseFakeCall(false);
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.fakeCall, "off");
                     editor.commit();
+                    editor.apply();
                     trackingOnOff.setText("Fake Call disabled");
                     trackingOnOff.setTextColor(Color.RED);
                     Toast.makeText(FakeCallActivity.this, "Fake Call is disabled", Toast.LENGTH_SHORT).show();
-                    Information.fakeCallValue = Information.sharedPreferences.getString(Information.fakeCall, "");
+                    Information.fakeCallValue = phoneNumber.getText().toString();
                 }
             } else {
-                ActivityCompat.requestPermissions(FakeCallActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 200);
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                startActivityForResult(intent, 200);
                 if (b) {
                     updateDataBaseFakeCall(true);
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.fakeCall, "on");
                     editor.commit();
+                    editor.apply();
                     trackingOnOff.setText("Recorder enabled");
                     trackingOnOff.setTextColor(Color.GREEN);
                     Toast.makeText(FakeCallActivity.this, "Fake Call is enabled", Toast.LENGTH_SHORT).show();
-                    Information.fakeCallValue = Information.sharedPreferences.getString(Information.fakeCall, "");
+                    Information.fakeCallValue = phoneNumber.getText().toString();
                 } else {
                     updateDataBaseFakeCall(false);
                     SharedPreferences.Editor editor = Information.sharedPreferences.edit();
                     editor.putString(Information.fakeCall, "off");
                     editor.commit();
+                    editor.apply();
                     trackingOnOff.setText("Recorder disabled");
                     trackingOnOff.setTextColor(Color.RED);
                     Toast.makeText(FakeCallActivity.this, "Fake Call is disabled", Toast.LENGTH_SHORT).show();
-                    Information.fakeCallValue = Information.sharedPreferences.getString(Information.fakeCall, "");
+                    Information.fakeCallValue = phoneNumber.getText().toString();
                 }
             }
         });

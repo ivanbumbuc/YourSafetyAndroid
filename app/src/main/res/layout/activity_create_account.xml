@@ -172,7 +172,7 @@
         android:layout_height="54dp"
         android:layout_marginBottom="48dp"
         android:backgroundTint="#FAFAFA"
-        android:text="Sign in"
+        android:text="Sign up"
         android:textColor="@color/black"
         android:textColorHighlight="#2E7D32"
         android:textStyle="bold"

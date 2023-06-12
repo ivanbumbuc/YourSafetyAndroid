@@ -54,7 +54,7 @@
         android:layout_width="222dp"
         android:layout_height="54dp"
         android:backgroundTint="#FAFAFA"
-        android:text="Sign up"
+        android:text="Sign in"
         android:textColor="@color/black"
         android:textColorHighlight="#2E7D32"
         android:textStyle="bold"

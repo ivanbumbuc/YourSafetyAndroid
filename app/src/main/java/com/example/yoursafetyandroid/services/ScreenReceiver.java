@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.yoursafetyandroid.account.Information;
+import com.example.yoursafetyandroid.fakeCall.IncomingCallActivity;
+import com.example.yoursafetyandroid.limitZone.LimitZoneActivity;
 import com.example.yoursafetyandroid.location.LocationService;
 import com.example.yoursafetyandroid.menu.MenuActivity;
 import com.example.yoursafetyandroid.recorder.Recorder;
@@ -34,13 +37,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScreenReceiver extends BroadcastReceiver {
 
+    public static int time = 30;
     private final Context context;
     private int counter = 0;
-    public static int time = 30;
-    public ScreenReceiver(Context context) {
-        this.context = context;
-    }
-
     private final CountDownTimer timer = new CountDownTimer(1500, 1000) {
         @Override
         public void onTick(long l) { }
@@ -51,6 +50,10 @@ public class ScreenReceiver extends BroadcastReceiver {
         }
     };
 
+    public ScreenReceiver(Context context) {
+        this.context = context;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void count() {
         counter++;
@@ -58,7 +61,6 @@ public class ScreenReceiver extends BroadcastReceiver {
             String recorderPermission = Information.sharedPreferences.getString(Information.recorder, "");
             String fakeCallPermission = Information.sharedPreferences.getString(Information.fakeCall, "");
             String sosPermission = Information.sharedPreferences.getString(Information.SOS,"");
-            //String locationPermission = Information.sharedPreferences.getString(Information.shareLocation,"");
             if(sosPermission.equals("on"))
             {
                 serviceStart();
@@ -74,49 +76,6 @@ public class ScreenReceiver extends BroadcastReceiver {
         timer.cancel();
         timer.start();
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    private void serviceStart() {
-//        List<String> numbers = new ArrayList<>();
-//        Toast.makeText(context, "Power Button pressed, SOS has been activated!", Toast.LENGTH_LONG).show();
-//        if(!Information.sharedPreferences.getString(Information.shareLocation,"").equals("on"))
-//        {
-//                Intent startServiceIntent = new Intent(MenuActivity.context, LocationService.class);
-//                MenuActivity.context.startService(startServiceIntent);
-//        }
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference docRef = db.collection("locationsPersons").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-//        docRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists() && document.getData().get("persons") != null) {
-//                    List<String> x = (ArrayList<String>)document.getData().get("persons");
-//                    final AtomicInteger counter = new AtomicInteger(x.size());
-//                    for(String z: x)
-//                    {
-//                        DocumentReference doc = db.collection("liveLocation").document(z);
-//                        doc.get().addOnCompleteListener(task2 -> {
-//                            if (task2.isSuccessful()) {
-//                                DocumentSnapshot document2 = task2.getResult();
-//                                if (document2.exists() && document2.getData().get("accountInformation") != null) {
-//                                    Map<String, String> person = (Map<String, String>) document2.getData().get("accountInformation");
-//                                    numbers.add(person.get("phone"));
-//                                }
-//                            } else {
-//                                Log.d("getContact", "get failed with ", task.getException());
-//                            }
-//                            if (counter.decrementAndGet() == 0) {
-//                                SmsService.sendSMS(numbers);
-//                                System.out.println(numbers);
-//                            }
-//                        });
-//                    }
-//                }
-//            } else {
-//                Log.d("getContact", "get failed with ", task.getException());
-//            }
-//        });
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void serviceStart() {
@@ -165,7 +124,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                     Log.d("getContact", "get failed with ", task.getException());
                 }
             });
-        }, 5000);  // Delay of 5 seconds
+        }, 5000);
     }
 
 
@@ -196,17 +155,15 @@ public class ScreenReceiver extends BroadcastReceiver {
             }};countDowntimer.start();
     }
 
-    private void fakeCall()
-    {
-        Vibrator vibrator=(Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(2000);
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(Information.phoneFake!=null)
-            intent.setData(Uri.parse("tel: "+ Information.phoneFake));
-        else
-            intent.setData(Uri.parse("tel: 0722222222"));
-        context.startActivity(intent);
-    }
+private void fakeCall() {
+        System.out.println("am intrat aici");
+    Vibrator vibrator=(Vibrator) MenuActivity.context.getSystemService(VIBRATOR_SERVICE);
+    vibrator.vibrate(5000);
+    Intent sessionIntent =new Intent(MenuActivity.activity, IncomingCallActivity.class);
+    // making sure activity stack is cleared before starting landing activity
+    sessionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    MenuActivity.context.startActivity(sessionIntent);
+}
+
 
 }

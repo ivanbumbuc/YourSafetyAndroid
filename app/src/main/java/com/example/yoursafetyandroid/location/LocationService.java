@@ -46,16 +46,6 @@ public class LocationService extends Service {
         if(MenuActivity.context!=null) {
             location = new Location();
         }
-//        runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                if(MenuActivity.context!=null) {
-//                    new Location();
-//                }
-//                handler.postDelayed(this, 4 * 1000); // Repeat every 4 seconds
-//            }
-//        };
-//        handler.post(runnable);
 
         return START_STICKY;
     }
@@ -63,7 +53,6 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
       super.onDestroy();
-      System.out.println("helllllllllllllllllooooo------------------------");
       location.stopLocationUpdates();
     }
 

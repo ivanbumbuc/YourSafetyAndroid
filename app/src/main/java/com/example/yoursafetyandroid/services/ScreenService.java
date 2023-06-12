@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.yoursafetyandroid.main.MainActivity;
+import com.example.yoursafetyandroid.sms.SmsService;
 
 public class ScreenService extends Service {
     private ScreenReceiver screenReceiver = null;
@@ -36,40 +37,29 @@ public class ScreenService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //  we are starting a foreground service differently for
-        //  build versions greater than Android Oreo
-        //  for compatibility
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O)
-            // NOTIFICARE CUSTOM
             startMyOwnForeground();
         else
-            // NOTIFICATE DEFAULT
             startForeground(1, new Notification());
 
-        // Create an IntentFilter instance.
         IntentFilter intentFilter = new IntentFilter();
 
-        // Add network connectivity change action.
         intentFilter.addAction("android.intent.action.SCREEN_ON");
         intentFilter.addAction("android.intent.action.SCREEN_OFF");
 
-        // Set broadcast receiver priority.
         intentFilter.setPriority(100);
 
-        // Create a network change broadcast receiver.
         screenReceiver = new ScreenReceiver(this);
 
-        // Register the broadcast receiver with the intent filter object.
         registerReceiver(screenReceiver, intentFilter);
 
-        //registerReceiver(SMSService.receiver, new IntentFilter("locatie"));
+        registerReceiver(SmsService.receiver, new IntentFilter("locatie"));
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground()
     {
-        String NOTIFICATION_CHANNEL_ID = "safetylife";
+        String NOTIFICATION_CHANNEL_ID = "YourSafety";
         String channelName = "Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
@@ -79,7 +69,6 @@ public class ScreenService extends Service {
         assert manager != null;
         manager.createNotificationChannel(chan);
 
-        // launch activity when clicking on background service notification
         Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.setAction("intentForceClose");
 
@@ -87,10 +76,9 @@ public class ScreenService extends Service {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
-                //.setSmallIcon(R.drawable.ic_stat_name)
                 .setColor(Color.GRAY)
-                .setContentTitle("SafetyLife is running in background")
-                .setContentText("Click to stop the application") // to be modified
+                .setContentTitle("YourSafety is running in background")
+                .setContentText("Click to stop the application")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setContentIntent(resultPendingIntent)
@@ -105,7 +93,7 @@ public class ScreenService extends Service {
         if(screenReceiver!=null)
         {
             unregisterReceiver(screenReceiver);
-            Log.d("SCREEN_TOGGLE_TAG", "Service onDestroy: screenOnOffReceiver is unregistered.");
+            Log.d("SCREEN_TOGGLE_TAG", "Service onDestroy: ScreenReceiver is unregistered.");
         }
 
     }
